@@ -1,12 +1,12 @@
 <?php
 
-//namespace App\Controllers;
+namespace App\Controllers;
 
-class Login
+class Login extends \Core\Controller
 {
 
     public function index(){
-        echo 'index login';
+        echo htmlspecialchars(print_r($this->route_params, true));
     }
 
 }
