@@ -10,6 +10,7 @@
  */
 require '../Core/Router.php';
 require '../App/Controllers/Login.php';
+require '../App/Controllers/Home.php';
 
 $router = new Router();
 
