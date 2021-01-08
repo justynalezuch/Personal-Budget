@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 class Home extends \Core\Controller
 {
-    public function index(){
+    public function indexAction(){
         echo 'homepage';
     }
 
