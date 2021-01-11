@@ -16,6 +16,9 @@ spl_autoload_register(function ($class) {
     }
 });
 
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+//Twig_Autoloader::register();
+
 $router = new Core\Router();
 
 // Add the routes
