@@ -5,7 +5,7 @@ namespace App\Models;
 use PDO;
 
 
-class User
+class User extends \Core\Model
 {
 
 }
