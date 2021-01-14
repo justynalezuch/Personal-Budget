@@ -28,13 +28,20 @@ class Signup extends \Core\Controller
 
         if($user->save()) {
 
-            View::renderTemplate('Signup/success.html');
+            $this->redirect('/signup/success');
 
         } else {
-            var_dump($user->errors);
-//            Vie
+
+            View::renderTemplate('Signup/new.html', [
+                'user' => $user
+            ]);
 
         }
+    }
+
+    public function successAction()
+    {
+        View::renderTemplate('Signup/success.html');
     }
 
 }
