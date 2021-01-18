@@ -2,20 +2,28 @@
 
 namespace App\Controllers;
 use Core\View;
+use App\Models\User;
 
 class Login extends \Core\Controller
 {
 
-    public function indexAction(){
-
-        echo htmlspecialchars(print_r($this->route_params, true));
-    }
-
-    public function newAction(){
-
+    /**
+     * Show the login page
+     *
+     * @return void;
+     */
+    public function newAction() {
         View::renderTemplate('Login/new.html');
     }
 
+    public function createAction() {
+
+        $user = User::findByEmail($_POST['email']);
+        var_dump($user);
+    }
 
 
-}
+
+
+
+    }
