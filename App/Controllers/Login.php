@@ -25,7 +25,8 @@ class Login extends \Core\Controller
             $this->redirect(Auth::getReturnToPage());
         } else {
             View::renderTemplate('Login/new.html', [
-                'email' => $_POST['email']
+                'email' => $_POST['email'],
+                'message' => "Nieprawidłowy email lub hasło."
             ]);
         }
     }

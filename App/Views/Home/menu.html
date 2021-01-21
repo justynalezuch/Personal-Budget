@@ -14,7 +14,9 @@
                 </div>
             </div>
             <div class="col-6 p-2 text-right">
-                Zalogowano jako: username
+                {% if current_user %}
+                Zalogowano jako: {{ current_user.name }}
+                {% endif %}
             </div>
         </div>
         <div class="row">

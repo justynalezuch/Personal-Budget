@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 
+use App\Auth;
 use App\Models\User;
 use Core\View;
 
@@ -26,7 +27,7 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
 
-        if($user->save()) {
+        if ($user->save()) {
 
             $this->redirect('/signup/success');
 
@@ -35,7 +36,6 @@ class Signup extends \Core\Controller
             View::renderTemplate('Signup/new.html', [
                 'user' => $user
             ]);
-
         }
     }
 

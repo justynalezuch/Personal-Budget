@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Auth;
 use Core\View;
 
 class Home extends \Core\Controller
@@ -13,12 +14,4 @@ class Home extends \Core\Controller
             View::renderTemplate('Home/index.html');
         }
     }
-
-    public function testAction()
-    {
-        $this->requireLogin();
-    }
-
-
-
 }
