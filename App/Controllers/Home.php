@@ -14,4 +14,11 @@ class Home extends \Core\Controller
         }
     }
 
+    public function testAction()
+    {
+        $this->requireLogin();
+    }
+
+
+
 }

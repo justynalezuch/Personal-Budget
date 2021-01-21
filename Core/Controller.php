@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use App\Auth;
+
 /**
  * Base controller
  */
@@ -62,4 +64,17 @@ abstract class Controller
         header('Location: http://' . $_SERVER['HTTP_HOST'] . $url,  true, 303);
         exit;
     }
+
+    /**
+     * Require user to login, remember requested page.
+     */
+    public function requireLogin() {
+
+        if(! Auth::isLoggedIn()) {
+            Auth::rememberRequestedPage();
+            $this->redirect('/login');
+        }
+    }
+
+
 }

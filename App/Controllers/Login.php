@@ -22,7 +22,7 @@ class Login extends \Core\Controller
         $user = User::authenticate($_POST['email'], $_POST['password']);
         if($user) {
             Auth::login($user);
-            $this->redirect('/');
+            $this->redirect(Auth::getReturnToPage());
         } else {
             View::renderTemplate('Login/new.html', [
                 'email' => $_POST['email']
@@ -38,6 +38,7 @@ class Login extends \Core\Controller
         Auth::logout();
         $this->redirect('/');
     }
+
 
 
 
