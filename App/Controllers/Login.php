@@ -19,6 +19,8 @@ class Login extends \Core\Controller
 
     public function createAction() {
 
+        $this->requireForm($_POST);
+
         $user = User::authenticate($_POST['email'], $_POST['password']);
         if($user) {
             Auth::login($user);

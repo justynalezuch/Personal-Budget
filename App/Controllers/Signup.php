@@ -25,6 +25,8 @@ class Signup extends \Core\Controller
      */
     public function createAction()
     {
+        $this->requireForm($_POST);
+
         $user = new User($_POST);
 
         if ($user->save()) {

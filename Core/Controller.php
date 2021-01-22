@@ -76,5 +76,16 @@ abstract class Controller
         }
     }
 
+    /**
+     * Access denied for create methods
+     */
+    public function requireForm($post) {
+
+        if(empty($post)) {
+            $this->redirect('/');
+        }
+    }
+
+
 
 }
