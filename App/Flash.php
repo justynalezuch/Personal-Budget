@@ -27,7 +27,10 @@ class Flash
     public static function getMessages(){
 
         if (isset($_SESSION['flash_notifications'])) {
-            return $_SESSION['flash_notifications'];
+
+            $message = $_SESSION['flash_notifications'];
+            unset($_SESSION['flash_notifications']);
+            return $message;
         }
     }
 }
