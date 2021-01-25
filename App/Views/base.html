@@ -13,9 +13,7 @@
 <body class="{% block body_class %}{% endblock %}">
 
     {% for message in flash_messages %}
-    <div>
-        {{ message }}
-    </div>
+        <div class="alert alert-{{ message.type }} text-center">{{ message.body }}</div>
     {% endfor %}
 
     {% block body %}
