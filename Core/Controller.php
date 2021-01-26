@@ -72,7 +72,7 @@ abstract class Controller
 
         if(! Auth::getUser()) {
 
-            Flash::addMessage('Musisz się zalogować, aby uzyskać dostęp do tej strony.');
+            Flash::addMessage('Musisz się zalogować, aby uzyskać dostęp do tej strony.', Flash::INFO);
             Auth::rememberRequestedPage();
             $this->redirect('/login');
         }

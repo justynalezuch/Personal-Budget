@@ -160,6 +160,12 @@ class User extends \Core\Model
         return $stmt->fetch();
     }
 
+
+    /**
+     * Assing default categories of payment method, incomes and expenses to new user
+     *
+     * @param $db
+     */
     public static function assignCategories($db) {
 
         $lastID = $db->lastInsertId();
