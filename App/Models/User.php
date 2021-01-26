@@ -37,7 +37,10 @@ class User extends \Core\Model
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
 
-            return $stmt->execute(); // return true or false
+            if($stmt->execute()) {
+                static::assignCategories($db);
+                return true;
+            }
         }
         return false;
     }
@@ -155,6 +158,19 @@ class User extends \Core\Model
         $stmt->execute();
 
         return $stmt->fetch();
+    }
+
+    public static function assignCategories($db) {
+
+        $lastID = $db->lastInsertId();
+
+        $sql = "INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT :user_id, name FROM payment_methods_default;
+                INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT :user_id, name FROM expenses_category_default;
+                INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT :user_id, name FROM incomes_category_default;";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $lastID, PDO::PARAM_INT);
+        $stmt->execute();
     }
 
 }
