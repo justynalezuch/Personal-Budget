@@ -28,6 +28,7 @@ class Login extends \Core\Controller
             Auth::login($user);
             Flash::addMessage('Zalogowałeś się poprawne.');
             $this->redirect(Auth::getReturnToPage());
+
         } else {
 
             Flash::addMessage('Logowanie nie powiodło się, spróbuj ponownie.', Flash::WARNING);
