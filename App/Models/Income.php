@@ -23,7 +23,7 @@ class Income extends \Core\Model
     public function validate() {
 
         if (! preg_match("/^\d{1,8}(\.\d{0,2})?$/", $this->amount)) {
-            $this->errors[] = 'Podaj poprawną wartość kwoty - maksymalnie 10 cyfr w tym 2 po przecinku.';
+            $this->errors[] = 'Kwota przychodu: Podaj poprawną wartość - maksymalnie 10 cyfr w tym 2 po przecinku.';
         }
 
         if(! preg_match("/^\d{4}-\d{2}-\d{2}$/" , $this->date)) {
