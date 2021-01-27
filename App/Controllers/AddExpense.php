@@ -28,7 +28,7 @@ class AddExpense extends Authenticated
 
         if ($expense->save()) {
 
-            Flash::addMessage('Poprawnie dodałeś przychód.');
+            Flash::addMessage('Poprawnie dodałeś wydatek.');
             $this->redirect('/add-expense/new');
 
         } else {
@@ -43,7 +43,7 @@ class AddExpense extends Authenticated
         }
 
     }
-    
+
     /**
      * Create lowercase slug
      *
@@ -70,9 +70,9 @@ class AddExpense extends Authenticated
 
         $paymentMethods = PaymentMethodAssignedToUser::getAll();
 
-        foreach ($paymentMethods as $key => $method) {
-            $paymentMethods[$key]['slug'] = static::createSlugFromString($method['name']);
-        }
+//        foreach ($paymentMethods as $key => $method) {
+//            $paymentMethods[$key]['slug'] = static::createSlugFromString($method['name']);
+//        }
 
         return $paymentMethods;
     }
