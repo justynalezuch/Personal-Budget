@@ -39,10 +39,6 @@ class AddIncome extends Authenticated
 
     }
 
-    public function successAction() {
-        echo 'success';
-    }
-
     /**
      * Create lowercase slug
      *

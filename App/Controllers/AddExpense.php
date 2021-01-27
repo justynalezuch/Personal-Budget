@@ -13,37 +13,37 @@ class AddExpense extends Authenticated
 {
     public function newAction() {
 
-        $incomeCategories = static::getIncomeCategories();
+        $expenseCategories = static::getExpenseCategories();
+        $paymentMethods = static::getPaymentMethods();
 
-        View::renderTemplate('Income/new.html', [
-            'income_categories' => $incomeCategories
+        View::renderTemplate('Expense/new.html', [
+            'expense_categories' => $expenseCategories,
+            'payment_methods' => $paymentMethods,
         ]);
     }
 
     public function createAction() {
 
-        $income = new Income($_POST);
+        $expense = new Expense($_POST);
 
-        if ($income->save()) {
+        if ($expense->save()) {
 
             Flash::addMessage('Poprawnie dodałeś przychód.');
-            $this->redirect('/add-income/new');
+            $this->redirect('/add-expense/new');
 
         } else {
-            $incomeCategories = static::getIncomeCategories();
+            $expenseCategories = static::getExpenseCategories();
+            $paymentMethods = static::getPaymentMethods();
 
-            View::renderTemplate('Income/new.html', [
-                'income_categories' => $incomeCategories,
-                'income' => $income,
+            View::renderTemplate('Expense/new.html', [
+                'expense_categories' => $expenseCategories,
+                'payment_methods' => $paymentMethods,
+                'expense' => $expense,
             ]);
         }
 
     }
-
-    public function successAction() {
-        echo 'success';
-    }
-
+    
     /**
      * Create lowercase slug
      *
@@ -55,15 +55,28 @@ class AddExpense extends Authenticated
         return strtolower($slug);
     }
 
-    public static function getIncomeCategories() {
+    public static function getExpenseCategories() {
 
-        $incomeCategories = IncomeCategoryAssignedToUser::getAll();
+        $expenseCategories = ExpenseCategoryAssignedToUser::getAll();
 
-        foreach ($incomeCategories as $key => $category) {
-            $incomeCategories[$key]['slug'] = static::createSlugFromString($category['name']);
+        foreach ($expenseCategories as $key => $category) {
+            $expenseCategories[$key]['slug'] = static::createSlugFromString($category['name']);
         }
 
-        return $incomeCategories;
+        return $expenseCategories;
     }
+
+    public static function getPaymentMethods() {
+
+        $paymentMethods = PaymentMethodAssignedToUser::getAll();
+
+        foreach ($paymentMethods as $key => $method) {
+            $paymentMethods[$key]['slug'] = static::createSlugFromString($method['name']);
+        }
+
+        return $paymentMethods;
+    }
+
+
 
 }
