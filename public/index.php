@@ -25,11 +25,14 @@ session_start();
 $router = new Core\Router();
 
 // Add the routes
+$router->add('financial-balance/{period:[a-z0-9-]+}', ['controller' => 'FinancialBalanceReview', 'action' => 'index']);
+$router->add('financial-balance', ['controller' => 'FinancialBalanceReview', 'action' => 'index']);
+
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 $router->add('login', ['controller' => 'Login', 'action' => 'new']);
-$router->add('financial-balance', ['controller' => 'FinancialBalanceReview', 'action' => 'index']);
+
 
 $router->dispatch($_SERVER['QUERY_STRING']);

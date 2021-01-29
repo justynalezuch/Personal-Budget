@@ -17,40 +17,41 @@ class Balance extends \Core\Model
 
     public function getExpenses() {
 
-        $sql = 'SELECT sum(amount), expenses_category_assigned_to_users.name AS category_name 
+        $sql = 'SELECT sum(amount) AS sum, expenses_category_assigned_to_users.name AS category_name 
             FROM expenses 
             INNER JOIN expenses_category_assigned_to_users on expenses.expense_category_assigned_to_user_id = expenses_category_assigned_to_users.id 
             WHERE (expenses.user_id = :user_id AND date_of_expense >= :first_date AND date_of_expense <= :second_date)
             GROUP BY expenses.expense_category_assigned_to_user_id 
-            ORDER BY sum(amount) DESC;
+            ORDER BY sum DESC;
             ';
 
         $stmt = static::prepareDatabaseStatement($sql);
-
+//        $stmt->setFetchMode(PDO::FETCH_CLASS, '\App\Models\Expense');
         $stmt->execute();
 
+//        return $stmt->fetch();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getIncomes() {
 
-        $sql = 'SELECT sum(amount), incomes_category_assigned_to_users.name AS category_name 
+        $sql = 'SELECT sum(amount) AS sum, incomes_category_assigned_to_users.name AS category_name 
             FROM incomes 
             INNER JOIN incomes_category_assigned_to_users on incomes.income_category_assigned_to_user_id = incomes_category_assigned_to_users.id 
             WHERE (incomes.user_id = :user_id AND date_of_income >= :first_date AND date_of_income <= :second_date)
             GROUP BY incomes.income_category_assigned_to_user_id 
-            ORDER BY sum(amount) DESC;
+            ORDER BY sum DESC;
             ';
 
         $stmt = static::prepareDatabaseStatement($sql);
-
-
+//        $stmt->setFetchMode(PDO::FETCH_CLASS, '\App\Models\Income');
         $stmt->execute();
 
+//        return $stmt->fetch();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getSumOfExpenses() {
+    protected function getSumOfExpenses() {
 
         $sql = 'SELECT sum(amount)
             FROM expenses
@@ -64,7 +65,7 @@ class Balance extends \Core\Model
         return $sumOfExpenses;
     }
 
-    public function getSumOfIncomes() {
+    protected function getSumOfIncomes() {
 
         $sql = 'SELECT sum(amount)
             FROM incomes
