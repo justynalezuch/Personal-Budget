@@ -10,9 +10,9 @@ use PDO;
 class Balance extends \Core\Model
 {
 
-    public function __construct($firstDate, $secondDate) {
-        $this->first_date = $firstDate;
-        $this->second_date = $secondDate;
+    public function __construct($startDate, $endDate) {
+        $this->first_date = $startDate;
+        $this->second_date = $endDate;
     }
 
     public function getExpenses() {
