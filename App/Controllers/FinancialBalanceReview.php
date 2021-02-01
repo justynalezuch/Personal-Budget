@@ -9,7 +9,7 @@ use Core\View;
 
 class FinancialBalanceReview extends Authenticated
 {
-    public function index(){
+    public function indexAction(){
 
         $period = isset($this->route_params['period']) ? $this->route_params['period'] : 'current-month';
 
@@ -20,11 +20,14 @@ class FinancialBalanceReview extends Authenticated
         $expenses = $balance->getExpenses();
         $incomes = $balance->getIncomes();
         $summary = $balance->getBalanceSummary();
-//
+////
 //        echo '<pre>';
 //        var_dump($expenses);
-//        var_dump($incomes);
+////        var_dump($incomes);
+//
+//        var_dump(json_encode((object)$expenses));
 //        exit;
+
 
         View::renderTemplate('Balance/index.html', [
             'period' => $period,

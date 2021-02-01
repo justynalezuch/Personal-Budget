@@ -142,7 +142,36 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/js/app.js"></script>
 <script>
+    if (typeof google !== 'undefined') {
+        // --- Load google charts ---
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
+        function drawChart() {
+            let expenses = JSON.parse('{{ expenses|json_encode|raw }}');
+            let category = [];
+            let sum = [];
+
+            for (let n = 0; n < expenses.length; n++) {
+                sum.push(parseFloat(expenses[n]['sum']));
+                category.push(expenses[n]['category_name']);
+            }
+
+            if(expenses.length > 0) {
+
+                let data = new google.visualization.DataTable();
+                data.addColumn('string', 'Kategoria');
+                data.addColumn('number', 'Wydatek');
+
+                for (i = 0; i < category.length; i++)
+                    data.addRow([category[i], sum[i]]);
+
+                let options = {'title': '', 'width': 520, 'height': 400};
+                let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+            }
+        }
+    }
 
 </script>
 {% endblock %}
