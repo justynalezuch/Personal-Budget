@@ -145,27 +145,32 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="/financial-balance/custom">
+            <form method="post" action="/financial-balance/custom" id="formCustomPeriod">
                 <div class="modal-body">
-<!--                    -->
-<!--                    {% for message in flash_messages %}-->
-<!--                    <div class="alert alert-{{ message.type }} text-center mb-4">{{ message.body }}</div>-->
-<!--                    {% endfor %}-->
+
+                    {% if flash_messages is not empty %}
+                        {% for message in flash_messages %}
+                        <div class="alert alert-{{ message.type }} text-center mb-4" id="periodError">{{ message.body }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    <!--                    <div class="alert alert-danger mb-4 text-center" id="periodError">{{ period_error }}</div>-->
 
                      <div class="form-group">
                             <label for="startDate">Data początkowa</label>
-                            <input class="form-control" type="date" name="start-date" id="startDate"
+                            <input class="form-control" type="date" name="start_date" id="startDate"
                                    {% if custom_start_date is not empty %}
                                    value="{{ custom_start_date }}"
                                    {% endif %}
+
                             />
                         </div>
                         <div class="form-group">
                             <label for="endDate">Data końcowa</label>
-                            <input class="form-control" type="date" name="end-date" id="endDate"
+                            <input class="form-control" type="date" name="end_date" id="endDate"
                                    {% if custom_end_date is not empty %}
                                    value="{{ custom_end_date }}"
                                    {% endif %}
+
                             />
                         </div>
                 </div>
@@ -214,6 +219,19 @@
             }
         }
     }
+
+    $('#formCustomPeriod').validate({
+        rules: {
+            start_date: {
+                required: true,
+                validDate: true
+            },
+            end_date: {
+                required: true,
+                validDate: true,
+            }
+        }
+    });
 
 </script>
 {% endblock %}

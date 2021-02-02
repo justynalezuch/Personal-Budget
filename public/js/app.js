@@ -104,7 +104,7 @@ $(document).ready(function () {
     }
 
     if(document.getElementById('periodError') != null){
-        $('#unstandardizedPeriod').modal('show');
+        $('#customPeriod').modal('show');
     }
 });
 

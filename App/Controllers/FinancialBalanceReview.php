@@ -3,29 +3,48 @@
 
 namespace App\Controllers;
 
-
 use App\Flash;
 use App\Models\Balance;
 use Core\View;
 
 class FinancialBalanceReview extends Authenticated
 {
-    public $start_date = '';
-    public $end_date = '';
+    public $custom_start_date = null;
+    public $custom_end_date = null;
 
     public function indexAction(){
 
         $period = isset($this->route_params['period']) ? $this->route_params['period'] : 'current-month';
 
-        if($period == 'custom' && ( ! isset($_POST['start-date']) || ! isset($_POST['end-date']))) {
-
-            if(! empty($_POST)) {
-                Flash::addMessage('Podaj datę początkową oraz końcową', Flash::WARNING);
-            }
-            $this->redirect('/financial-balance');
-        }
-
         switch ($period) {
+
+            case 'custom':
+
+                if(empty($_POST) ) {
+                    $this->redirect('/financial-balance');
+                }
+                else if($this->customDatesValidation($_POST['start_date'], $_POST['end_date'])) {
+
+                    $startDate = $_POST['start_date'];
+                    $endDate = $_POST['end_date'];
+
+                    $this->custom_start_date = $_POST['start_date'];
+                    $this->custom_end_date = $_POST['end_date'];
+                }
+                else {
+
+                    // Form values
+//                    $this->custom_start_date = $_POST['start_date'];
+//                    $this->custom_end_date = $_POST['end_date'];
+//                    // Set default period - current month
+//                    $startDate = date('Y-m-01');
+//                    $endDate = date('Y-m-d');
+//                    $period = 'current-month';
+
+                    $this->redirect('/financial-balance');
+                }
+
+                break;
             case 'current-month':
                 $startDate = date('Y-m-01');
                 $endDate = date('Y-m-d');
@@ -38,14 +57,6 @@ class FinancialBalanceReview extends Authenticated
                 $startDate = date('Y-01-01');
                 $endDate = date('Y-m-d');
                 break;
-            case 'custom':
-                if($this->customDatesValidation()) {
-                    $startDate = $_POST['start-date'];
-                    $endDate = $_POST['end-date'];
-                }
-                $customStartDate = isset($startDate) ? $startDate : $_POST['start-date'];
-                $customEndDate = isset($endDate) ? $endDate : $_POST['end-date'];
-                break;
 
             default:
                 $this->redirect('/financial-balance');
@@ -56,26 +67,19 @@ class FinancialBalanceReview extends Authenticated
         $incomes = $balance->getIncomes();
         $summary = $balance->getBalanceSummary();
 
-//        echo '<pre>';
-//        var_dump($expenses);
-////        var_dump($incomes);
-//
-//        var_dump(json_encode((object)$expenses));
-//        exit;
-
 
         View::renderTemplate('Balance/index.html', [
             'period' => $period,
             'expenses' => $expenses,
             'incomes' => $incomes,
             'summary' => $summary,
-            'custom_start_date' => $startDate,
-            'custom_end_date' => $endDate
+            'custom_start_date' => $this->custom_start_date,
+            'custom_end_date' => $this->custom_end_date
         ]);
 
     }
 
-    private function customDatesValidation() {
+    private function customDatesValidation($startDate, $endDate) {
 
         if(isset($startDate) && isset($endDate)) {
 
@@ -83,18 +87,22 @@ class FinancialBalanceReview extends Authenticated
 
                 if(!preg_match("/^\d{4}-\d{2}-\d{2}$/" , $startDate) || !preg_match("/^\d{4}-\d{2}-\d{2}$/" , $endDate)) {
 
-                    Flash::addMessage('Wprowadź daty w poprawnym formacie.', Flash::WARNING);
+                    Flash::addMessage('Okres niestandardowy: Wprowadź daty w poprawnym formacie.', Flash::WARNING);
                     return false;
                 }
 
                 if($startDate > $endDate) {
-                    Flash::addMessage('Wprowadź daty w kolejności chronologicznej.', Flash::WARNING);
+                    Flash::addMessage('Okres niestandardowy: Wprowadź daty w kolejności chronologicznej.', Flash::WARNING);
+                    $this->custom_start_date = $startDate;
+                    $this->custom_end_date = $endDate;
                     return false;
                 }
+
                 return true;
             }
 
-            Flash::addMessage('Podaj datę początkową oraz końcową', Flash::WARNING);
+            Flash::addMessage('Okres niestandardowy: Podaj datę początkową oraz końcową', Flash::WARNING);
+            return false;
         }
 
 
