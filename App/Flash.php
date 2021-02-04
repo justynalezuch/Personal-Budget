@@ -13,6 +13,7 @@ class Flash
     const SUCCESS = 'success';
     const INFO = 'info';
     const WARNING = 'warning';
+    const DANGER = 'danger';
 
     /**
      * @param $message

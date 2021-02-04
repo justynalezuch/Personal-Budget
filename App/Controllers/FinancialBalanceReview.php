@@ -9,8 +9,8 @@ use Core\View;
 
 class FinancialBalanceReview extends Authenticated
 {
-    public $custom_start_date = null;
-    public $custom_end_date = null;
+    public $start_date = null;
+    public $end_date = null;
 
     public function indexAction(){
 
@@ -20,63 +20,51 @@ class FinancialBalanceReview extends Authenticated
 
             case 'custom':
 
-                if(empty($_POST) ) {
-                    $this->redirect('/financial-balance');
-                }
-                else if($this->customDatesValidation($_POST['start_date'], $_POST['end_date'])) {
+                if( ! empty($_POST) && $this->customDatesValidation($_POST['start_date'], $_POST['end_date']) ) {
+                    $this->setPeriod( $_POST['start_date'],  $_POST['end_date']);
 
-                    $startDate = $_POST['start_date'];
-                    $endDate = $_POST['end_date'];
-
-                    $this->custom_start_date = $_POST['start_date'];
-                    $this->custom_end_date = $_POST['end_date'];
                 }
                 else {
-
-                    // Form values
-//                    $this->custom_start_date = $_POST['start_date'];
-//                    $this->custom_end_date = $_POST['end_date'];
-//                    // Set default period - current month
-//                    $startDate = date('Y-m-01');
-//                    $endDate = date('Y-m-d');
-//                    $period = 'current-month';
-
                     $this->redirect('/financial-balance');
                 }
+                break;
 
-                break;
             case 'current-month':
-                $startDate = date('Y-m-01');
-                $endDate = date('Y-m-d');
+
+                $this->setPeriod(date('Y-m-01'), date('Y-m-d'));
                 break;
+
             case 'last-month':
-                $startDate = date('Y-m-d', strtotime('first day of last month'));
-                $endDate = date('Y-m-d', strtotime('last day of last month'));
+
+                $this->setPeriod(date('Y-m-d', strtotime('first day of last month')), date('Y-m-d', strtotime('last day of last month')));
                 break;
+
             case 'current-year':
-                $startDate = date('Y-01-01');
-                $endDate = date('Y-m-d');
+
+                $this->setPeriod(date('Y-01-01'), date('Y-m-d'));
                 break;
 
             default:
                 $this->redirect('/financial-balance');
         }
 
-        $balance = new Balance($startDate, $endDate);
-        $expenses = $balance->getExpenses();
-        $incomes = $balance->getIncomes();
-        $summary = $balance->getBalanceSummary();
-
+        $balance = new Balance($this->start_date, $this->end_date);
 
         View::renderTemplate('Balance/index.html', [
             'period' => $period,
-            'expenses' => $expenses,
-            'incomes' => $incomes,
-            'summary' => $summary,
-            'custom_start_date' => $this->custom_start_date,
-            'custom_end_date' => $this->custom_end_date
+            'expenses' => $balance->getExpenses(),
+            'incomes' => $balance->getIncomes(),
+            'summary' => $balance->getBalanceSummary(),
+            'custom_start_date' => $this->start_date,
+            'custom_end_date' => $this->end_date
         ]);
 
+    }
+
+    private function setPeriod($startDate, $endDate) {
+
+        $this->start_date = $startDate;
+        $this->end_date = $endDate;
     }
 
     private function customDatesValidation($startDate, $endDate) {
@@ -87,12 +75,12 @@ class FinancialBalanceReview extends Authenticated
 
                 if(!preg_match("/^\d{4}-\d{2}-\d{2}$/" , $startDate) || !preg_match("/^\d{4}-\d{2}-\d{2}$/" , $endDate)) {
 
-                    Flash::addMessage('Okres niestandardowy: Wprowadź daty w poprawnym formacie.', Flash::WARNING);
+                    Flash::addMessage('Wprowadź daty w poprawnym formacie.', Flash::DANGER);
                     return false;
                 }
 
                 if($startDate > $endDate) {
-                    Flash::addMessage('Okres niestandardowy: Wprowadź daty w kolejności chronologicznej.', Flash::WARNING);
+                    Flash::addMessage('Wprowadź daty w kolejności chronologicznej.', Flash::DANGER);
                     $this->custom_start_date = $startDate;
                     $this->custom_end_date = $endDate;
                     return false;
@@ -101,7 +89,7 @@ class FinancialBalanceReview extends Authenticated
                 return true;
             }
 
-            Flash::addMessage('Okres niestandardowy: Podaj datę początkową oraz końcową', Flash::WARNING);
+            Flash::addMessage('Podaj datę początkową oraz końcową', Flash::DANGER);
             return false;
         }
 

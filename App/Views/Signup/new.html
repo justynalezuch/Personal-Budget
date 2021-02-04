@@ -104,12 +104,27 @@
                 }
             }
         });
-
         $('#inputPassword').hideShowPassword({
             show: false,
-            innerToggle: 'focus'
+            innerToggle: 'focus',
+            toggle: {
+                className: 'btn'
+            },
+            states: {
+                shown: {
+                    toggle: {
+                        content: "Ukryj"
+                    }
+                },
+                hidden: {
+                    toggle: {
+                        content: "Pokaż"
+                    }
+                }
+            }
         });
     });
+
 </script>
 {% endblock %}
 
