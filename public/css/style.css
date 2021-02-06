@@ -184,4 +184,11 @@ label[id$=-error] {
   color: #000;
 }
 
+.settings ul#settings a {
+  color: #003E6B;
+}
+.settings ul#settings a.active {
+  color: #e28422;
+}
+
 /*# sourceMappingURL=style.css.map */

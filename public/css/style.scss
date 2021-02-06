@@ -226,6 +226,18 @@ label[id$=-error] {
   color: #000;
 }
 
+.settings {
+  //
+  ul#settings {
+    a{
+      color: $baseColor;
+      &.active {
+        //font-weight: 700;
+        color: #e28422;
+      }
+    }
+  }
+}
 
 
 
