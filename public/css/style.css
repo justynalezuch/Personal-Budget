@@ -191,4 +191,8 @@ label[id$=-error] {
   color: #e28422;
 }
 
+label.error {
+  width: 100%;
+}
+
 /*# sourceMappingURL=style.css.map */
