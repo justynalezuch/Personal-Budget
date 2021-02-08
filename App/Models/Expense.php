@@ -55,7 +55,7 @@ class Expense extends \Core\Model
                             :payment_method_assigned_to_user_id, 
                             :amount, 
                             :date_of_expense, 
-                            :expense_comment)';
+                            :expense_comment);';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);

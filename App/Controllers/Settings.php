@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Flash;
 use Core\View;
 
 class Settings extends Authenticated
@@ -15,7 +16,22 @@ class Settings extends Authenticated
     }
 
     public function userUpdateAction() {
-        echo 'update';
+
+        $user = Auth::getUser();
+
+        if($user->updateProfile($_POST)) {
+
+            Flash::addMessage('Zmiany w profilu użytkownika zostały poprawnie zapisane.');
+            $this->redirect('/settings');
+
+        } else {
+
+//            Flash::addMessage('error');
+
+            View::renderTemplate('Settings/index.html', [
+                'user' => $user
+            ]);
+        }
     }
 
 

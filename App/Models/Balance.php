@@ -55,7 +55,7 @@ class Balance extends \Core\Model
 
         $sql = 'SELECT sum(amount)
             FROM expenses
-            WHERE (user_id = :user_id AND date_of_expense >= :first_date AND date_of_expense <= :second_date)';
+            WHERE (user_id = :user_id AND date_of_expense >= :first_date AND date_of_expense <= :second_date);';
 
         $stmt = static::prepareDatabaseStatement($sql);
 
@@ -69,7 +69,7 @@ class Balance extends \Core\Model
 
         $sql = 'SELECT sum(amount)
             FROM incomes
-            WHERE (user_id = :user_id AND date_of_income >= :first_date AND date_of_income <= :second_date)';
+            WHERE (user_id = :user_id AND date_of_income >= :first_date AND date_of_income <= :second_date);';
 
         $stmt = static::prepareDatabaseStatement($sql);
 

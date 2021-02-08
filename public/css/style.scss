@@ -3,6 +3,8 @@ $border-radius: 5px;
 
 $baseColor: #003E6B;
 $lightGray: #dadada;
+$orange: #e28422;
+$red: #ff0000;
 
 html, body {
   height: 100%;
@@ -85,7 +87,7 @@ header {
     color: $baseColor;
     &.active {
       font-weight: 700;
-      color: #e28422;
+      color: darken($orange, 5%);
     }
     &:hover {
       color: #a7571a;
@@ -145,13 +147,13 @@ header {
     font-size: 36px;
   }
   .dropdown-item.active {
-    background-color: #e28422;
+    background-color: $orange;
     &:hover {
       background-color: #a7571a;
     }
   }
   .text-secondary span {
-    color: #e28422;
+    color: $orange;
   }
 }
 
@@ -202,7 +204,7 @@ blockquote {
 }
 
 .error {
-  color: red;
+  color: $red;
   margin-top: 5px;
 }
 
@@ -233,7 +235,7 @@ label[id$=-error] {
       color: $baseColor;
       &.active {
         //font-weight: 700;
-        color: #e28422;
+        color: $orange;
       }
     }
   }
@@ -241,6 +243,7 @@ label[id$=-error] {
 
 label.error {
   width: 100%;
+  color: #b70c0c;
 }
 
 .customHideShow {

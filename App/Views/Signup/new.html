@@ -15,7 +15,7 @@
                 <h1>Rejestracja</h1>
 
     {% if user.errors is not empty %}
-        <ul>
+        <ul class="alert alert-danger text-left pl-4 mt-4">
             {% for error in user.errors %}
             <li>
                 {{ error}}
@@ -104,6 +104,7 @@
                 }
             }
         });
+
         $('#inputPassword').hideShowPassword({
             show: false,
             innerToggle: 'focus',

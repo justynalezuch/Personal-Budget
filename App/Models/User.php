@@ -28,7 +28,7 @@ class User extends \Core\Model
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
             $sql = 'INSERT INTO users (name, email, password_hash)
-            VALUES (:name, :email, :password_hash)';
+            VALUES (:name, :email, :password_hash);';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -64,7 +64,7 @@ class User extends \Core\Model
             $this->errors[] = 'Podaj poprawny adres email.';
         }
 
-        if(static::emailExists($this->email)) {
+        if(static::emailExists($this->email, $this->id)) {
             $this->errors[] = 'Istnieje już konto zarejestrowane na podany adres email.';
         }
 
@@ -73,16 +73,19 @@ class User extends \Core\Model
         }
 
         // Password
-        if (strlen($this->password) < 8 || strlen($this->password) > 20) {
-            $this->errors[] = "Hasło musi posiadać od 8 do 20 znaków.";
-        }
+        if(isset($this->password)) {
 
-        if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-            $this->errors[] = 'Hasło musi posiadać co najmniej jedną literę.';
-        }
+            if (strlen($this->password) < 8 || strlen($this->password) > 20) {
+                $this->errors[] = "Hasło musi posiadać od 8 do 20 znaków.";
+            }
 
-        if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-            $this->errors[] = 'Hasło musi posiadać co najmniej jedną cyfrę.';
+            if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
+                $this->errors[] = 'Hasło musi posiadać co najmniej jedną literę.';
+            }
+
+            if (preg_match('/.*\d+.*/i', $this->password) == 0) {
+                $this->errors[] = 'Hasło musi posiadać co najmniej jedną cyfrę.';
+            }
         }
     }
 
@@ -113,7 +116,7 @@ class User extends \Core\Model
      */
     public static function findByEmail($email)
     {
-        $sql = 'SELECT * FROM users WHERE email = :email';
+        $sql = 'SELECT * FROM users WHERE email = :email;';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -154,7 +157,7 @@ class User extends \Core\Model
      */
     public static function findByID($id)
     {
-        $sql = 'SELECT * FROM users WHERE id = :id';
+        $sql = 'SELECT * FROM users WHERE id = :id;';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -184,6 +187,52 @@ class User extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':user_id', $lastID, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+
+    /**
+     * Update user data
+     *
+     * @param $data
+     * @return bool
+     */
+    public function updateProfile($data) {
+
+        $this->name = $data['name'];
+        $this->email = $data['email'];
+
+        if($data['password'] != '') {
+            $this->password = $data['password'];
+        }
+
+        $this->validate();
+
+        if(empty($this->errors)) {
+
+            $sql = 'UPDATE users SET name = :name, email = :email';
+
+            if(isset($this->password)) {
+                $sql .= ' , password_hash = :password_hash';
+            }
+            $sql .= ' WHERE id = :id;';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            if(isset($this->password)) {
+
+                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+            }
+
+            return $stmt->execute();
+        }
+
+        return false;
     }
 
 }
