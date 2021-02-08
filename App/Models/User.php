@@ -93,9 +93,16 @@ class User extends \Core\Model
      * @param $email
      * @return bool
      */
-    public static function emailExists($email)
+    public static function emailExists($email, $ignore_id = null)
     {
-        return static::findByEmail($email) !== false;
+        $user =  static::findByEmail($email);
+
+        if($user) {
+            if($user->id != $ignore_id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
