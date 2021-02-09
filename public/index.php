@@ -27,6 +27,7 @@ $router = new Core\Router();
 // Add the routes
 $router->add('financial-balance/{period:[a-z0-9-]+}', ['controller' => 'FinancialBalanceReview', 'action' => 'index']);
 $router->add('financial-balance', ['controller' => 'FinancialBalanceReview', 'action' => 'index']);
+//$router->add('settings/{active:[a-z-]+}', ['controller' => 'Settings', 'action' => 'index']);
 $router->add('settings', ['controller' => 'Settings', 'action' => 'index']);
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);
