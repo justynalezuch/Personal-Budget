@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use App\Flash;
+use App\Models\IncomeCategoryAssignedToUser;
 use Core\View;
 
 class Settings extends Authenticated
@@ -26,7 +27,8 @@ class Settings extends Authenticated
     public function indexAction() {
 
         View::renderTemplate('Settings/index.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'income_categories' => IncomeCategoryAssignedToUser::getAll()
         ]);
     }
 
