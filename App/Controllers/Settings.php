@@ -9,6 +9,14 @@ use Core\View;
 
 class Settings extends Authenticated
 {
+//    /**
+//     * Active tabs
+//     */
+//    const USER = 'user';
+//    const INCOME_CATEGORIES = 'income-categories';
+//    const EXPENSE_CATEGORIES = 'expense-categories';
+//    const PAYMENT_METHODS = 'payment-methods';
+
     public function before()
     {
         parent::before();
@@ -17,11 +25,8 @@ class Settings extends Authenticated
 
     public function indexAction() {
 
-        $active =  isset($this->route_params['active']) ? $this->route_params['active'] : 'income-categories';
-
         View::renderTemplate('Settings/index.html', [
-            'user' => $this->user,
-            'active_tab' => $active
+            'user' => $this->user
         ]);
     }
 
@@ -30,24 +35,17 @@ class Settings extends Authenticated
         if($this->user->updateProfile($_POST)) {
 
             Flash::addMessage('Zmiany w profilu użytkownika zostały poprawnie zapisane.');
-            
-//            $this->redirect('/settings');
-
-            View::renderTemplate('Settings/index.html', [
-                'user' => $this->user,
-                'active_tab' => 'user'
-            ]);
-
+            $this->redirect('/settings');
 
         } else {
 
             Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
-
             View::renderTemplate('Settings/index.html', [
-                'user' => $this->user,
-                'active_tab' => 'user'
+                'user' => $this->user
             ]);
         }
     }
+
+
 
 }

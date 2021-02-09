@@ -52,7 +52,7 @@ class User extends \Core\Model
         }
 
         if (ctype_alnum($this->name) == false) {
-            $this->errors[] = "Nazwa użytkownika może składać się tylko z liter i cyfr (bez polskich znaków)";
+            $this->errors[] = "Nazwa użytkownika może składać się tylko z liter i cyfr (bez polskich znaków i spacji)";
         }
 
         if (strlen($this->name) < 3 || strlen($this->name) > 50) {
