@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <ul class="list-group">
+        <ul class="list-group list-group-flush">
             {% for income_category in income_categories %}
             <li class="list-group-item d-flex justify-content-between">
                 <p class="mb-0" data-id="{{ income_category.id }}">{{ income_category.name}}</p>
@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<!-- Modal income cetegory edit -->
+<!-- Modal income category edit -->
 <div class="modal fade" id="incomeCategoryEdit" tabindex="-1" aria-labelledby="incomeCategoryEditLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -34,18 +34,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="/settings/incomeCategoryEdit" id="formincomeCategoryEdit">
+                <form method="post" action="/settings/incomeCategoryEdit" id="formIncomeCategoryEdit">
                     <div class="form-group">
                         <label for="inputName">Nazwa kategorii przychodu:</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
                                     </svg>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="inputName" name="name" value="{{ user.name }}"/>
+                            <input type="hidden" name="category_id" value="">
+                            <input type="text" class="form-control" id="inputName" name="category_name" value=""/>
                         </div>
                     </div>
                     <div class="mt-5">

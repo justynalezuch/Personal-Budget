@@ -16,41 +16,6 @@
                     Ustawienia
                 </h1>
 
-                {#
-                <ul class="nav nav-tabs" id="settings" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_tab == 'income-categories' %} active {% endif %}" id="income-categories-tab" data-toggle="tab" href="#income-categories" role="tab" aria-controls="income-categories" aria-selected="true">Kategorie przychodów</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_tab == 'expense-categories' %} active {% endif %}" id="expense-categories-tab" data-toggle="tab" href="#expense-categories" role="tab" aria-controls="expense-categories" aria-selected="false">Kategorie wydatków</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_tab == 'payment-methods' %} active {% endif %}" id="payment-methods-tab" data-toggle="tab" href="#payment-methods" role="tab" aria-controls="payment-methods" aria-selected="false">Sposoby płatności</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_tab == 'user' %} active {% endif %}" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="false">Użytkownik</a>
-                    </li>
-
-                </ul>
-                <div class="tab-content" id="settingsContent">
-                    <div class="tab-pane fade p-3 {% if active_tab == 'income-categories' %} show active {% endif %}" id="income-categories" role="tabpanel" aria-labelledby="income-categories-tab">
-                        {% include 'Partials/Settings/income-categories.html' %}
-                    </div>
-
-                    <div class="tab-pane fade p-3 {% if active_tab == 'expense-categories' %} show active {% endif %}" id="expense-categories" role="tabpanel" aria-labelledby="expense-categories-tab">
-                        {% include 'Partials/Settings/expense-categories.html' %}
-                    </div>
-
-                    <div class="tab-pane fade p-3 {% if active_tab == 'payment-methods' %} show active {% endif %}" id="payment-methods" role="tabpanel" aria-labelledby="payment-methods-tab">
-                        {% include 'Partials/Settings/payment-methods.html' %}
-                    </div>
-                    <div class="tab-pane fade p-3 {% if active_tab == 'user' %} show active {% endif %}" id="user" role="tabpanel" aria-labelledby="user-tab">
-                        {% include 'Partials/Settings/user.html' %}
-                    </div>
-                </div>
-                #}
-
-
                 <ul class="nav nav-tabs" id="settings" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link" id="income-categories-tab" data-toggle="tab" href="#income-categories" role="tab" aria-controls="income-categories" aria-selected="true">Kategorie przychodów</a>
@@ -82,6 +47,42 @@
                         {% include 'Partials/Settings/user.html' %}
                     </div>
                 </div>
+
+                {#
+                <!--
+                <ul class="nav nav-tabs" id="settings" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_tab == 'income-categories' %} active {% endif %}" id="income-categories-tab" data-toggle="tab" href="#income-categories" role="tab" aria-controls="income-categories" aria-selected="true">Kategorie przychodów</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_tab == 'expense-categories' %} active {% endif %}" id="expense-categories-tab" data-toggle="tab" href="#expense-categories" role="tab" aria-controls="expense-categories" aria-selected="false">Kategorie wydatków</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_tab == 'payment-methods' %} active {% endif %}" id="payment-methods-tab" data-toggle="tab" href="#payment-methods" role="tab" aria-controls="payment-methods" aria-selected="false">Sposoby płatności</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_tab == 'user' %} active {% endif %}" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="false">Użytkownik</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content" id="settingsContent">
+                    <div class="tab-pane fade p-3 {% if active_tab == 'income-categories' %} show active {% endif %}" id="income-categories" role="tabpanel" aria-labelledby="income-categories-tab">
+                        {% include 'Partials/Settings/income-categories.html' %}
+                    </div>
+
+                    <div class="tab-pane fade p-3 {% if active_tab == 'expense-categories' %} show active {% endif %}" id="expense-categories" role="tabpanel" aria-labelledby="expense-categories-tab">
+                        {% include 'Partials/Settings/expense-categories.html' %}
+                    </div>
+
+                    <div class="tab-pane fade p-3 {% if active_tab == 'payment-methods' %} show active {% endif %}" id="payment-methods" role="tabpanel" aria-labelledby="payment-methods-tab">
+                        {% include 'Partials/Settings/payment-methods.html' %}
+                    </div>
+                    <div class="tab-pane fade p-3 {% if active_tab == 'user' %} show active {% endif %}" id="user" role="tabpanel" aria-labelledby="user-tab">
+                        {% include 'Partials/Settings/user.html' %}
+                    </div>
+                </div>
+                -->
+                #}
 
             </div>
         </div>
@@ -168,6 +169,18 @@
          }
 
          // */
+
+        $('button[data-target="#incomeCategoryEdit"]').click(function () {
+
+            const element = $(this).parent().siblings();
+
+            const id = element.attr('data-id');
+            const category = element.text();
+
+            $('form#formIncomeCategoryEdit input[name="category_id"]').val(id);
+            $('form#formIncomeCategoryEdit input[name="category_name"]').val(category);
+
+        });
 
     });
 </script>
