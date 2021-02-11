@@ -159,7 +159,6 @@
 
              // $('.tab-pane').removeClass('active');
              $('#user').addClass('show active');
-
              $('#userModal').modal('show');
 
          }
@@ -168,9 +167,14 @@
              $('#income-categories').addClass('show active');
          }
 
+         if(url.includes('incomeCategoryUpdate')) {
+             $('#incomeCategoryEditModal').modal('show');
+         }
+
+
          // */
 
-        $('button[data-target="#incomeCategoryEdit"]').click(function () {
+        $('button[data-target="#incomeCategoryEditModal"]').click(function () {
 
             const element = $(this).parent().siblings();
 
@@ -180,6 +184,20 @@
             $('form#formIncomeCategoryEdit input[name="category_id"]').val(id);
             $('form#formIncomeCategoryEdit input[name="category_name"]').val(category);
 
+        });
+
+        $('#formIncomeCategoryEdit').validate({
+            rules: {
+                category_name: {
+                    required: true,
+                    remote: '/account/validate-income-category'
+                }
+            },
+            messages: {
+                category_name: {
+                    remote: "Istnieje już kategoria o podanej nazwie."
+                }
+            }
         });
 
     });

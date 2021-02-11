@@ -22,13 +22,15 @@ class Settings extends Authenticated
     {
         parent::before();
         $this->user = Auth::getUser();
+        $this->income_categories = new IncomeCategoryAssignedToUser();
+
     }
 
     public function indexAction() {
 
         View::renderTemplate('Settings/index.html', [
             'user' => $this->user,
-            'income_categories' => IncomeCategoryAssignedToUser::getAll()
+            'income_categories' => $this->income_categories
         ]);
     }
 
@@ -49,8 +51,22 @@ class Settings extends Authenticated
     }
 
 
-    public function incomeCategoryEditAction(){
+    public function incomeCategoryUpdateAction(){
 
+        if($this->income_categories->updateCategory($_POST)) {
+
+            Flash::addMessage('Kategoria została poprawnie edytowana.');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+
+            View::renderTemplate('Settings/index.html', [
+                'user' => $this->user,
+                'income_categories' => $this->income_categories
+            ]);
+        }
     }
 
 

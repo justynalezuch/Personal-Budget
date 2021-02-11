@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Income;
+use App\Models\IncomeCategoryAssignedToUser;
 use \App\Models\User;
 
 /**
@@ -22,4 +24,16 @@ class Account extends \Core\Controller
         header('Content-Type: application/json');
         echo json_encode($is_valid);
     }
+
+     public function validateIncomeCategoryAction()
+    {
+        $income_categories = new IncomeCategoryAssignedToUser();
+
+        $is_valid = ! $income_categories->categoryExists($_GET['category_name']);
+
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
+
 }
