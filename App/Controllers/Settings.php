@@ -49,5 +49,10 @@ class Settings extends Authenticated
     }
 
 
+    public function incomeCategoryEditAction(){
+
+    }
+
+
 
 }

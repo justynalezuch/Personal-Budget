@@ -8,8 +8,25 @@ use PDO;
 
 class IncomeCategoryAssignedToUser extends \Core\Model
 {
-    public static function getAll() {
+    /**
+     * Error messages
+     * @var array
+     */
+    public $errors = [];
 
+    public function validate() {
+
+        // Category name
+        if(static::categoryExists($this->name)) {
+            $this->errors[] = 'Istnieje już kategoria o podanej nazwie.';
+        }
+        if (preg_match('/^[a-zA-Z\s]+$/', $this->name) == 0) {
+            $this->errors[] = 'Nazwa kategori może składać się z liter oraz spacji.';
+        }
+    }
+
+    public static function getAll()
+    {
         $loggedUserID = Auth::getUser()->id;
 
         $sql = 'SELECT id, name FROM incomes_category_assigned_to_users WHERE user_id=:logged_user_id;';
@@ -20,6 +37,34 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function categoryExists($category) {
+
+        $user_categories = static::getAll();
+
+        foreach ($user_categories as $item) {
+            if(strtolower($category) == strtolower($item['name'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function updateCategory($data) {
+
+        $this->id = $data['category_id'];
+        $this->name = $data['category_name'];
+
+        $this->validate();
+        if(empty($this->errors)) {
+
+        }
+        else {
+          
+        }
+
+
     }
 
 }
