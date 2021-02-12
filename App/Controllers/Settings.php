@@ -71,7 +71,20 @@ class Settings extends Authenticated
 
     public function incomeCategoryNewAction(){
 
-        var_dump($_POST);
+        if($this->income_categories->save($_POST)) {
+
+            Flash::addMessage('Kategoria została poprawnie dodana.');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+
+            View::renderTemplate('Settings/index.html', [
+                'user' => $this->user,
+                'income_categories' => $this->income_categories
+            ]);
+        }
     }
 
 

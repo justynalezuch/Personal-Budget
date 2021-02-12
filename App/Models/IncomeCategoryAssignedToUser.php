@@ -77,4 +77,28 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         return false;
     }
 
+    public function save($data) {
+
+        $this->name = $data['category_name'];
+
+        $this->validate();
+
+        if(empty($this->errors)) {
+
+            $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (:user_id, :name);';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+
+        return false;
+    }
+
+
+
 }
