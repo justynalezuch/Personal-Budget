@@ -10,9 +10,15 @@ use Core\View;
 
 class AddIncome extends Authenticated
 {
+    public function before()
+    {
+        parent::before();
+        $this->income_categories = new IncomeCategoryAssignedToUser();
+
+    }
     public function newAction() {
 
-        $incomeCategories = static::getIncomeCategories();
+        $incomeCategories = $this->getIncomeCategories();
 
         View::renderTemplate('Income/new.html', [
             'income_categories' => $incomeCategories
@@ -29,7 +35,7 @@ class AddIncome extends Authenticated
             $this->redirect('/add-income/new');
 
         } else {
-            $incomeCategories = static::getIncomeCategories();
+            $incomeCategories = $this->getIncomeCategories();
 
             View::renderTemplate('Income/new.html', [
                 'income_categories' => $incomeCategories,
@@ -50,9 +56,9 @@ class AddIncome extends Authenticated
         return strtolower($slug);
     }
 
-    public static function getIncomeCategories() {
+    public function getIncomeCategories() {
 
-        $incomeCategories = IncomeCategoryAssignedToUser::getAll();
+        $incomeCategories = $this->income_categories->getAll();
 
         foreach ($incomeCategories as $key => $category) {
             $incomeCategories[$key]['slug'] = static::createSlugFromString($category['name']);
