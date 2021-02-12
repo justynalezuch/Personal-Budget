@@ -60,12 +60,21 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         $this->name = $data['category_name'];
 
         $this->validate();
+
         if(empty($this->errors)) {
 
-            return true;
+            $sql = 'UPDATE incomes_category_assigned_to_users SET name = :name WHERE id = :id;';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
         }
 
-       return false;
+        return false;
     }
 
 }
