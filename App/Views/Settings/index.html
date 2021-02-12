@@ -171,7 +171,6 @@
              $('#incomeCategoryEditModal').modal('show');
          }
 
-
          // */
 
         $('button[data-target="#incomeCategoryEditModal"]').click(function () {
@@ -199,6 +198,22 @@
                 }
             }
         });
+
+        $('#formIncomeCategoryAdd').validate({
+            rules: {
+                category_name: {
+                    required: true,
+                    remote: '/account/validate-income-category'
+                }
+            },
+            messages: {
+                category_name: {
+                    remote: "Istnieje już kategoria o podanej nazwie."
+                }
+            }
+        });
+
+
 
     });
 </script>

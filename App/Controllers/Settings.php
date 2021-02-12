@@ -69,6 +69,11 @@ class Settings extends Authenticated
         }
     }
 
+    public function incomeCategoryNewAction(){
+
+        var_dump($_POST);
+    }
+
 
 
 }

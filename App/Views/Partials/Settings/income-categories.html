@@ -20,6 +20,14 @@
             </li>
             {% endfor %}
         </ul>
+        <div class="mt-4">
+            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#incomeCategoryAddModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                </svg>
+                Dodaj nową
+            </button>
+        </div>
     </div>
 </div>
 
@@ -59,9 +67,7 @@
                         </div>
                     </div>
                     <div class="mt-5">
-                        <button type="submit" class="btn btn-primary">
-                            Zapisz
-                        </button>
+                        <button type="submit" class="btn btn-primary">Zapisz</button>
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
                     </div>
                 </form>
@@ -70,3 +76,50 @@
         </div>
     </div>
 </div>
+
+<!-- Modal income category add -->
+<div class="modal fade" id="incomeCategoryAddModal" tabindex="-1" aria-labelledby="incomeCategoryAddLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="incomeCategoryAddLabel">Kategoria przychodu - dodawanie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if income_categories.errors is not empty %}
+                <ul class="alert alert-danger pl-4">
+                    {% for error in income_categories.errors %}
+                    <li>
+                        {{ error }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form method="post" action="/settings/incomeCategoryNew" id="formIncomeCategoryAdd">
+                    <div class="form-group">
+                        <label for="inputName">Nazwa kategorii przychodu:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" name="category_name" value="{{ income_categories.name }}" required/>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-primary">Zapisz</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
