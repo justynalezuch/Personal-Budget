@@ -185,6 +185,20 @@
 
         });
 
+         $('button[data-target="#incomeCategoryDeleteModal"]').click(function () {
+
+            const element = $(this).parent().siblings();
+
+            const id = element.attr('data-id');
+            const category = element.text();
+
+            $('form#formIncomeCategoryDelete input[name="category_id"]').val(id);
+            $('form#formIncomeCategoryDelete label strong').text(category);
+
+        });
+
+
+
         $('#formIncomeCategoryEdit').validate({
             rules: {
                 category_name: {
