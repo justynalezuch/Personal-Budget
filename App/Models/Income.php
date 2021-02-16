@@ -66,6 +66,27 @@ class Income extends \Core\Model
         return false;
     }
 
+    public static function findByCategory($category_id) {
 
+        $sql = 'SELECT * FROM incomes WHERE income_category_assigned_to_user_id = :category_id;';
 
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function incomeExists($category_id) {
+
+        $income = static::findByCategory($category_id);
+
+        if($income) {
+            return true;
+        }
+
+        return false;
+    }
 }

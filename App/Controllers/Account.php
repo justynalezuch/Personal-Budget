@@ -35,5 +35,15 @@ class Account extends \Core\Controller
         echo json_encode($is_valid);
     }
 
+    public function findIncomeByCategoryAction(){
+
+        echo (json_encode(Income::findByCategory($_GET['category_id'])));
+    }
+
+    public function incomeExistsAction()
+    {
+        echo(Income::findByCategory($_GET['category_id']) != false);
+    }
+
 
 }
