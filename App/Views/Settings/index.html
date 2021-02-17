@@ -187,16 +187,52 @@
 
          $('button[data-target="#incomeCategoryDeleteModal"]').click(function () {
 
-            const element = $(this).parent().siblings();
+             $('form#formIncomeCategoryDelete .alert').addClass('d-none');
 
+             const element = $(this).parent().siblings();
             const id = element.attr('data-id');
             const category = element.text();
 
             $('form#formIncomeCategoryDelete input[name="category_id"]').val(id);
             $('form#formIncomeCategoryDelete label strong').text(category);
 
-        });
 
+             $.ajax({
+                 url : `/account/find-income-by-category?category_id=${id}`,
+                 success : function(response) {
+                     let incomes = JSON.parse(response);
+                      if(incomes.length) {
+                            $('form#formIncomeCategoryDelete .alert').removeClass('d-none');
+                            
+                            let text = `<p>Spowoduje to usunięcie wszystkich przychodów z wybranej kategorii:</p>
+
+                            <table class="table table-light table-sm">
+                              <tr>
+                                <th>Lp.</th>
+                                <th>Kwota</th>
+                                <th>Data</th>
+                              </tr>`;
+
+                            $.each( incomes, function( index, value ){
+
+                                text += `<tr>
+                                    <td>${++index}.</td>
+                                    <td>${value.amount}</td>
+                                    <td>${value.date_of_income}</td>
+                                </tr>`;
+                            });
+
+                            text += '</table>';
+
+                            $('form#formIncomeCategoryDelete .alert').html(text);
+                        }
+                 },
+                 error : function() {
+                     console.log("Wystąpił błąd z połączeniem");
+                 }
+             });
+
+        });
 
 
         $('#formIncomeCategoryEdit').validate({

@@ -76,7 +76,7 @@ class Income extends \Core\Model
 
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function incomeExists($category_id) {
