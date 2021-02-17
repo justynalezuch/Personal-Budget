@@ -20,7 +20,7 @@
                 </h1>
 
                 {% if income.errors is not empty %}
-                <ul class="mb-5">
+                <ul class="mb-5 alert alert-danger text-left pl-4">
                     {% for error in income.errors %}
                     <li>{{ error }}</li>
                     {% endfor %}

@@ -20,7 +20,7 @@
                 </h1>
 
                 {% if expense.errors is not empty %}
-                <ul class="mb-5">
+                <ul class="mb-5 alert alert-danger text-left pl-4">
                     {% for error in expense.errors %}
                     <li>{{ error }}</li>
                     {% endfor %}
@@ -76,7 +76,8 @@
                             <select class="form-control"
                                     id="category"
                                     name="category"
-                                    aria-describedby="validationServer04">
+                                    aria-describedby="validationServer04" required>
+                                    <option disabled selected value> -- Wybierz kategorię -- </option>
                                     {% for category in expense_categories %}
                                     <option value="{{ category.id }}">{{ category.name }}</option>
                                     {% endfor %}
@@ -95,7 +96,6 @@
                         </div>
                     </div>
             </form>
-
         </div>
     </div>
 </main>
