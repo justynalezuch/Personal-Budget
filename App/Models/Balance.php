@@ -26,10 +26,8 @@ class Balance extends \Core\Model
             ';
 
         $stmt = static::prepareDatabaseStatement($sql);
-//        $stmt->setFetchMode(PDO::FETCH_CLASS, '\App\Models\Expense');
         $stmt->execute();
 
-//        return $stmt->fetch();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -44,10 +42,8 @@ class Balance extends \Core\Model
             ';
 
         $stmt = static::prepareDatabaseStatement($sql);
-//        $stmt->setFetchMode(PDO::FETCH_CLASS, '\App\Models\Income');
         $stmt->execute();
 
-//        return $stmt->fetch();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

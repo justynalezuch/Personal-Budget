@@ -7,6 +7,7 @@ use App\Auth;
 use App\Flash;
 use App\Models\IncomeCategoryAssignedToUser;
 use Core\View;
+use App\Models\Income;
 
 class Settings extends Authenticated
 {
@@ -86,6 +87,26 @@ class Settings extends Authenticated
             ]);
         }
     }
+
+    public function incomeCategoryDeleteAction(){
+
+        if(Income::delete($_POST['category_id']) && $this->income_categories->delete($_POST['category_id'])) {
+
+            Flash::addMessage('Kategoria została usunięta.');
+            $this->redirect('/settings');
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+
+            View::renderTemplate('Settings/index.html', [
+                'user' => $this->user,
+                'income_categories' => $this->income_categories
+            ]);
+        }
+
+    }
+
+
 
 
 
