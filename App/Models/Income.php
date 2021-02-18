@@ -72,7 +72,7 @@ class Income extends \Core\Model
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -96,7 +96,7 @@ class Income extends \Core\Model
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
 
         if($stmt->execute()){
 

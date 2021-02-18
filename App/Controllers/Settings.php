@@ -5,34 +5,51 @@ namespace App\Controllers;
 
 use App\Auth;
 use App\Flash;
-use App\Models\IncomeCategoryAssignedToUser;
 use Core\View;
+
 use App\Models\Income;
+use App\Models\Expense;
+use App\Models\IncomeCategoryAssignedToUser;
+use App\Models\ExpenseCategoryAssignedToUser;
 
 class Settings extends Authenticated
 {
-//    /**
-//     * Active tabs
-//     */
-//    const USER = 'user';
-//    const INCOME_CATEGORIES = 'income-categories';
-//    const EXPENSE_CATEGORIES = 'expense-categories';
-//    const PAYMENT_METHODS = 'payment-methods';
+    /**
+     * Active tabs
+     */
+    const USER = 'user';
+    const INCOME_CATEGORIES = 'income-categories';
+    const EXPENSE_CATEGORIES = 'expense-categories';
+    const PAYMENT_METHODS = 'payment-methods';
+
+    /**
+     * Active tab in settings, set default
+     *
+     * @var string
+     */
+    private $active_tab = self::INCOME_CATEGORIES;
 
     public function before()
     {
         parent::before();
         $this->user = Auth::getUser();
         $this->income_categories = new IncomeCategoryAssignedToUser();
+        $this->expense_categories = new ExpenseCategoryAssignedToUser();
+    }
 
+    private function renderTemplate() {
+
+        View::renderTemplate('Settings/index.html', [
+            'user' => $this->user,
+            'income_categories' => $this->income_categories,
+            'expense_categories' => $this->expense_categories,
+            'active_tab' => $this->active_tab
+        ]);
     }
 
     public function indexAction() {
 
-        View::renderTemplate('Settings/index.html', [
-            'user' => $this->user,
-            'income_categories' => $this->income_categories
-        ]);
+        $this->renderTemplate();
     }
 
     public function userUpdateAction() {
@@ -45,16 +62,15 @@ class Settings extends Authenticated
         } else {
 
             Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
-            View::renderTemplate('Settings/index.html', [
-                'user' => $this->user
-            ]);
+            $this->active_tab = self::USER;
+            $this->renderTemplate();
         }
-    }
 
+    }
 
     public function incomeCategoryUpdateAction(){
 
-        if($this->income_categories->updateCategory($_POST)) {
+        if($this->income_categories->update($_POST)) {
 
             Flash::addMessage('Kategoria została poprawnie edytowana.');
             $this->redirect('/settings');
@@ -62,11 +78,8 @@ class Settings extends Authenticated
         } else {
 
             Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
-
-            View::renderTemplate('Settings/index.html', [
-                'user' => $this->user,
-                'income_categories' => $this->income_categories
-            ]);
+            $this->active_tab = self::INCOME_CATEGORIES;
+            $this->renderTemplate();
         }
     }
 
@@ -80,11 +93,8 @@ class Settings extends Authenticated
         } else {
 
             Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
-
-            View::renderTemplate('Settings/index.html', [
-                'user' => $this->user,
-                'income_categories' => $this->income_categories
-            ]);
+            $this->active_tab = self::INCOME_CATEGORIES;
+            $this->renderTemplate();
         }
     }
 
@@ -94,17 +104,62 @@ class Settings extends Authenticated
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
+
         } else {
 
             Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
-
-            View::renderTemplate('Settings/index.html', [
-                'user' => $this->user,
-                'income_categories' => $this->income_categories
-            ]);
+            $this->active_tab = self::INCOME_CATEGORIES;
+            $this->renderTemplate();
         }
-
     }
+
+    public function expenseCategoryUpdateAction(){
+
+        if($this->expense_categories->update($_POST)) {
+
+            Flash::addMessage('Kategoria została poprawnie edytowana.');
+            $this->redirect('/settings');
+
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+            $this->active_tab = self::EXPENSE_CATEGORIES;
+            $this->renderTemplate();
+        }
+    }
+
+    public function expenseCategoryNewAction(){
+
+        if($this->expense_categories->save($_POST)) {
+
+            Flash::addMessage('Kategoria została poprawnie dodana.');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+            $this->active_tab = self::EXPENSE_CATEGORIES;
+            $this->renderTemplate();
+        }
+    }
+
+    public function expenseCategoryDeleteAction(){
+
+        if(Expense::delete($_POST['category_id']) && $this->expense_categories->delete($_POST['category_id'])) {
+
+            Flash::addMessage('Kategoria została usunięta.');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+            $this->active_tab = self::EXPENSE_CATEGORIES;
+            $this->renderTemplate();
+        }
+    }
+
+
 
 
 

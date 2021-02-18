@@ -54,7 +54,7 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         return false;
     }
 
-    public function updateCategory($data) {
+    public function update($data) {
 
         $this->id = $data['category_id'];
         $this->name = $data['category_name'];
@@ -105,15 +105,12 @@ class IncomeCategoryAssignedToUser extends \Core\Model
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
 
         if($stmt->execute()){
-
             return true;
         }
         return false;
     }
-
-
 
 }

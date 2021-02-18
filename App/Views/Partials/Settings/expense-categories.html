@@ -1,1 +1,162 @@
-expense
+<div class="row">
+    <div class="col-12">
+        <ul class="list-group list-group-flush">
+            {% for expense_category in expense_categories.getAll() %}
+            <li class="list-group-item d-flex justify-content-between">
+                <p class="mb-0" data-id="{{ expense_category.id }}">{{ expense_category.name}}</p>
+                <div>
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#expenseCategoryEditModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#expenseCategoryDeleteModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="mt-4">
+            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#expenseCategoryAddModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                </svg>
+                Dodaj nową
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal expense category edit -->
+<div class="modal fade" id="expenseCategoryEditModal" tabindex="-1" aria-labelledby="expenseCategoryEditLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="expenseCategoryEditLabel">Kategoria wydatku - edycja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if expense_categories.errors is not empty %}
+                <ul class="alert alert-danger pl-4">
+                    {% for error in expense_categories.errors %}
+                    <li>
+                        {{ error }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form method="post" action="/settings/expense-category-update" id="formExpenseCategoryEdit">
+                    <div class="form-group">
+                        <label for="inputName">Nazwa kategorii wydatku:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <input type="hidden" name="category_id" value="{{ expense_categories.id }}">
+                            <input type="text" class="form-control" id="inputName" name="category_name" value="{{ expense_categories.name }}" required/>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-primary">Zapisz</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal expense category add -->
+<div class="modal fade" id="expenseCategoryAddModal" tabindex="-1" aria-labelledby="expenseCategoryAddLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="expenseCategoryAddLabel">Kategoria wydatku - dodawanie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if expense_categories.errors is not empty %}
+                <ul class="alert alert-danger pl-4">
+                    {% for error in expense_categories.errors %}
+                    <li>
+                        {{ error }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form method="post" action="/settings/expense-category-new" id="formExpenseCategoryAdd">
+                    <div class="form-group">
+                        <label for="inputName">Nazwa kategorii wydatku:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" name="category_name" value="{{ expense_categories.name }}" required/>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-primary">Zapisz</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal expense category delete -->
+<div class="modal fade" id="expenseCategoryDeleteModal" tabindex="-1" aria-labelledby="expenseCategoryDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="expenseCategoryDeleteLabel">Kategoria wydatku - usuwanie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if expense_categories.errors is not empty %}
+                <ul class="alert alert-danger pl-4">
+                    {% for error in expense_categories.errors %}
+                    <li>
+                        {{ error }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <form method="post" action="/settings/expense-category-delete" id="formExpenseCategoryDelete">
+                    <div class="form-group">
+                        <label>Czy na pewno chcesz usunąć kategorię <strong></strong>?</label>
+                        <input type="hidden" name="category_id" value="">
+                        <div class="alert alert-danger"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger">Usuń</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

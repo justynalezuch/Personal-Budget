@@ -72,6 +72,45 @@ class Expense extends \Core\Model
         return false;
     }
 
+    public static function findByCategory($category_id) {
+
+        $sql = 'SELECT * FROM expenses WHERE expense_category_assigned_to_user_id = :category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function expenseExists($category_id) {
+
+        $expense = static::findByCategory($category_id);
+
+        if($expense) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function delete($category_id) {
+
+        $sql = 'DELETE FROM expenses WHERE expense_category_assigned_to_user_id = :category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+
+        if($stmt->execute()){
+
+            return true;
+        }
+        return false;
+    }
+
 
 
 }
