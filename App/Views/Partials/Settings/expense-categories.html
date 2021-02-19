@@ -62,11 +62,26 @@
                                     </svg>
                                 </div>
                             </div>
-                            <input type="hidden" name="category_id" value="{{ expense_categories.id }}">
                             <input type="text" class="form-control" id="inputName" name="category_name" value="{{ expense_categories.name }}" required/>
+                            <input type="hidden" name="category_id" value="{{ expense_categories.id }}">
                         </div>
                     </div>
-                    <div class="mt-5">
+                    <div class="limit">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="editCategoryLimitCheck">
+                                <label class="form-check-label" for="editCategoryLimitCheck">
+                                    Włącz limit dla kategorii
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editCategoryLimitInput">Ustaw miesięczny limit wydatków dla kategorii:</label>
+                            <input class="form-control" type="text" name="limit" id="editCategoryLimitInput" disabled>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Zapisz</button>
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
                     </div>
@@ -110,7 +125,21 @@
                             <input type="text" class="form-control" name="category_name" value="{{ expense_categories.name }}" required/>
                         </div>
                     </div>
-                    <div class="mt-5">
+                    <div class="limit">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" name="category_limit" id="addCategoryLimitCheck">
+                                <label class="form-check-label" for="addCategoryLimitCheck">
+                                    Włącz limit dla kategorii
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="addCategoryLimitInput">Ustaw miesięczny limit wydatków dla kategorii:</label>
+                            <input class="form-control" type="text" name="limit" id="addCategoryLimitInput" disabled>
+                        </div>
+                    </div>
+                    <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Zapisz</button>
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
                     </div>
@@ -145,8 +174,8 @@
                     <div class="form-group">
                         <label>Czy na pewno chcesz usunąć kategorię <strong></strong>?</label>
                         <input type="hidden" name="category_id" value="">
-                        <div class="alert alert-danger"></div>
                     </div>
+                    <div class="alert alert-danger"></div>
 
                     <button type="submit" class="btn btn-danger">Usuń</button>
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>

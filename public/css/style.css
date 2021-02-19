@@ -209,4 +209,13 @@ label.error {
   top: 3px;
 }
 
+.list-group-item {
+  padding: 0.4rem;
+}
+
+.limit {
+  padding: 1rem;
+  background: #e9ecef;
+}
+
 /*# sourceMappingURL=style.css.map */

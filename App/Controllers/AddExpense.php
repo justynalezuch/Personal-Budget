@@ -11,13 +11,18 @@ use Core\View;
 
 class AddExpense extends Authenticated
 {
+    public function before()
+    {
+        parent::before();
+        $this->expense_categories = new ExpenseCategoryAssignedToUser();
+    }
+
     public function newAction() {
 
-        $expenseCategories = static::getExpenseCategories();
         $paymentMethods = static::getPaymentMethods();
 
         View::renderTemplate('Expense/new.html', [
-            'expense_categories' => $expenseCategories,
+            'expense_categories' => $this->getExpenseCategories(),
             'payment_methods' => $paymentMethods,
         ]);
     }
@@ -32,11 +37,10 @@ class AddExpense extends Authenticated
             $this->redirect('/add-expense/new');
 
         } else {
-            $expenseCategories = static::getExpenseCategories();
             $paymentMethods = static::getPaymentMethods();
 
             View::renderTemplate('Expense/new.html', [
-                'expense_categories' => $expenseCategories,
+                'expense_categories' => $this->getExpenseCategories(),
                 'payment_methods' => $paymentMethods,
                 'expense' => $expense,
             ]);
@@ -55,9 +59,9 @@ class AddExpense extends Authenticated
         return strtolower($slug);
     }
 
-    public static function getExpenseCategories() {
+    public function getExpenseCategories() {
 
-        $expenseCategories = ExpenseCategoryAssignedToUser::getAll();
+        $expenseCategories = $this->expense_categories->getAll();
 
         foreach ($expenseCategories as $key => $category) {
             $expenseCategories[$key]['slug'] = static::createSlugFromString($category['name']);

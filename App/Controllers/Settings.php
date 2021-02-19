@@ -27,7 +27,7 @@ class Settings extends Authenticated
      *
      * @var string
      */
-    private $active_tab = self::INCOME_CATEGORIES;
+    private $active_tab = self::EXPENSE_CATEGORIES;
 
     public function before()
     {

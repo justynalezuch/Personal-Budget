@@ -284,4 +284,22 @@ $(document).ready(function() {
             }
         }
     });
+
+    $('input#addCategoryLimitCheck').change(function() {
+        if(this.checked) {
+            $('input#addCategoryLimitInput').prop('disabled', false);
+        } else {
+            $('input#addCategoryLimitInput').prop('disabled', true);
+        }
+    });
+
+    $('input#editCategoryLimitCheck').change(function() {
+        if(this.checked) {
+            $('input#editCategoryLimitInput').prop('disabled', false);
+        } else {
+            $('input#editCategoryLimitInput').prop('disabled', true);
+        }
+    });
+
+
 });
