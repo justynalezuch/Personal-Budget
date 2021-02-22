@@ -88,12 +88,16 @@ $(document).ready(function() {
 
     // --- Income categories settings ---
 
+    // For expense category edit - ignore actual category name
+    let incomeCategoryIgnoreID = null;
+
     $('button[data-target="#incomeCategoryEditModal"]').click(function () {
 
         const element = $(this).parent().siblings();
 
         const id = element.attr('data-id');
         const category = element.text();
+        incomeCategoryIgnoreID = id;
 
         $('form#formIncomeCategoryEdit input[name="category_id"]').val(id);
         $('form#formIncomeCategoryEdit input[name="category_name"]').val(category);
@@ -166,7 +170,14 @@ $(document).ready(function() {
             category_name: {
                 required: true,
                 validCategoryName: true,
-                remote: '/account/validate-income-category'
+                remote: {
+                    url: '/account/validate-income-category',
+                    data: {
+                        ignore_id: function () {
+                            return incomeCategoryIgnoreID;
+                        }
+                    }
+                }
             }
         },
         messages: {
@@ -191,6 +202,8 @@ $(document).ready(function() {
         }
     });
 
+    // For expense category edit - ignore actual category name
+    let expenseCategoryIgnoreID = null;
 
     // --- Expense categories settings ---
 
@@ -200,6 +213,7 @@ $(document).ready(function() {
 
         const id = element.attr('data-id');
         const category = element.text();
+        expenseCategoryIgnoreID = id;
 
         $('form#formExpenseCategoryEdit input[name="category_id"]').val(id);
         $('form#formExpenseCategoryEdit input[name="category_name"]').val(category);
@@ -255,12 +269,20 @@ $(document).ready(function() {
 
     });
 
+
     $('#formExpenseCategoryEdit').validate({
         rules: {
             category_name: {
                 required: true,
                 validCategoryName: true,
-                remote: '/account/validate-expense-category'
+                remote: {
+                    url: '/account/validate-expense-category',
+                    data: {
+                        ignore_id: function () {
+                            return expenseCategoryIgnoreID;
+                        }
+                    }
+                }
             }
         },
         messages: {

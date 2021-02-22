@@ -115,6 +115,7 @@ class Settings extends Authenticated
 
     public function expenseCategoryUpdateAction(){
 
+        var_dump($_POST); exit;
         if($this->expense_categories->update($_POST)) {
 
             Flash::addMessage('Kategoria została poprawnie edytowana.');

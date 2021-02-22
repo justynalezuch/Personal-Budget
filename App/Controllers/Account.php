@@ -32,7 +32,7 @@ class Account extends \Core\Controller
     {
         $income_categories = new IncomeCategoryAssignedToUser();
 
-        $is_valid = ! $income_categories->categoryExists($_GET['category_name']);
+        $is_valid = ! $income_categories->categoryExists($_GET['category_name'], $_GET['ignore_id'] ?? null);
 
         header('Content-Type: application/json');
         echo json_encode($is_valid);
@@ -47,7 +47,7 @@ class Account extends \Core\Controller
     {
         $income_categories = new ExpenseCategoryAssignedToUser();
 
-        $is_valid = ! $income_categories->categoryExists($_GET['category_name']);
+        $is_valid = ! $income_categories->categoryExists($_GET['category_name'], $_GET['ignore_id'] ?? null);
 
         header('Content-Type: application/json');
         echo json_encode($is_valid);

@@ -22,7 +22,7 @@ class IncomeCategoryAssignedToUser extends \Core\Model
     public function validate() {
 
         // Category name
-        if($this->categoryExists($this->name)) {
+        if($this->categoryExists($this->name, $this->id ?? null)) {
             $this->errors[] = 'Istnieje już kategoria o podanej nazwie.';
         }
         if (preg_match('/^[a-zA-Z\s]+$/', $this->name) == 0) {
@@ -42,13 +42,15 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function categoryExists($category) {
+    public function categoryExists($category, $ignore_id = null) {
 
         $user_categories = $this->getAll();
 
         foreach ($user_categories as $item) {
             if(strtolower($category) == strtolower($item['name'])) {
-                return true;
+                if($item['id'] != $ignore_id) {
+                    return true;
+                }
             }
         }
         return false;

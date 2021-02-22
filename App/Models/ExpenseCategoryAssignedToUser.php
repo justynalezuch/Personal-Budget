@@ -21,11 +21,18 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
     public function validate() {
 
         // Category name
-        if($this->categoryExists($this->name)) {
+        if($this->categoryExists($this->name, $this->id ?? null)) {
             $this->errors[] = 'Istnieje już kategoria o podanej nazwie.';
         }
         if (preg_match('/^[a-zA-Z\s]+$/', $this->name) == 0) {
             $this->errors[] = 'Nazwa kategori może składać się z liter oraz spacji.';
+        }
+
+        // Monthly limit
+        if (isset($this->monthly_limit)) {
+            if (! preg_match("/^\d{1,15}(\.\d{0,2})?$/", $this->monthly_limit)) {
+                $this->errors[] = 'Podaj poprawną wartość miesięcznego limitu dla kategorii.';
+            }
         }
     }
 
@@ -41,17 +48,20 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function categoryExists($category) {
+    public function categoryExists($category, $ignore_id = null) {
 
         $user_categories = $this->getAll();
 
         foreach ($user_categories as $item) {
             if(strtolower($category) == strtolower($item['name'])) {
-                return true;
+                if($item['id'] != $ignore_id) {
+                    return true;
+                }
             }
         }
         return false;
     }
+
 
     public function update($data) {
 
@@ -62,13 +72,23 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
 
         if(empty($this->errors)) {
 
-            $sql = 'UPDATE expenses_category_assigned_to_users SET name = :name WHERE id = :id;';
+            $sql = 'UPDATE expenses_category_assigned_to_users SET name = :name';
+
+            if(isset($this->monthly_limit)) {
+                $sql .= ' , monthly_limit = :monthly_limit';
+            }
+
+            $sql .= ' WHERE id = :id;';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            if(isset($this->monthly_limit)) {
+                $stmt->bindValue(':monthly_limit', $this->monthly_limit, PDO::PARAM_STR);
+            }
 
             return $stmt->execute();
         }
