@@ -121,5 +121,27 @@
             }
         });
     });
+
+    $('select#category').on('change', function() {
+
+        let id = this.value;
+        let amount = $('input#amount').val();
+
+        $.ajax({
+            url : `/account/check-expense-category-limit`,
+            type: 'POST',
+            data: {
+                category_id: id,
+                amount: amount
+            },
+            success : function(response) {
+               console.log(response);
+            },
+            error : function() {
+                console.log('Wystąpił błąd z połączeniem');
+            }
+        });
+
+    });
 </script>
 {% endblock %}

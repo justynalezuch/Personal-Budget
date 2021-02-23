@@ -62,7 +62,6 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         return false;
     }
 
-
     public function update($data) {
 
         $this->id = $data['category_id'];
@@ -112,7 +111,7 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
             }
 
             $sql .= ');';
-            
+
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
@@ -140,6 +139,18 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
             return true;
         }
         return false;
+    }
+
+    public function getExpenseCategoryLimit($category_id) {
+
+        $sql = 'SELECT monthly_limit FROM expenses_category_assigned_to_users WHERE id = :category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
     }
 
 

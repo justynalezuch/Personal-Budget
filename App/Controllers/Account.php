@@ -45,9 +45,9 @@ class Account extends \Core\Controller
 
     public function validateExpenseCategoryAction()
     {
-        $income_categories = new ExpenseCategoryAssignedToUser();
+        $expense_categories = new ExpenseCategoryAssignedToUser();
 
-        $is_valid = ! $income_categories->categoryExists($_GET['category_name'], $_GET['ignore_id'] ?? null);
+        $is_valid = ! $expense_categories->categoryExists($_GET['category_name'], $_GET['ignore_id'] ?? null);
 
         header('Content-Type: application/json');
         echo json_encode($is_valid);
@@ -56,6 +56,14 @@ class Account extends \Core\Controller
     public function findExpenseByCategoryAction(){
 
         echo (json_encode(Expense::findByCategory($_GET['category_id'])));
+    }
+
+    public function checkExpenseCategoryLimitAction(){
+
+        $expense_categories = new ExpenseCategoryAssignedToUser();
+
+        var_dump($expense_categories->getExpenseCategoryLimit($_POST['category_id']));
+
     }
 
 
