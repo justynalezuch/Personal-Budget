@@ -206,6 +206,7 @@ $(document).ready(function() {
 
     $('button[data-target="#expenseCategoryEditModal"]').click(function () {
 
+        // Reset limit input
         $('input#editCategoryLimitCheck').prop('checked', false);
         $('input#editCategoryLimitInput').prop('disabled', true);
         $('input#editCategoryLimitInput').val('');
@@ -344,7 +345,7 @@ $(document).ready(function() {
             $('input#editCategoryLimitInput').prop('disabled', false);
         } else {
             $('input#editCategoryLimitInput').prop('disabled', true);
-            $('input#editCategoryLimitInput').val('');
+            $('#editCategoryLimitInput').val('');
         }
     });
 

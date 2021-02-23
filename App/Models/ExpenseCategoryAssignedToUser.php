@@ -29,7 +29,7 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         }
 
         // Monthly limit
-        if (isset($this->monthly_limit)) {
+        if (isset($this->monthly_limit) && $this->monthly_limit != null) {
             if (! preg_match("/^\d{1,15}(\.\d{0,2})?$/", $this->monthly_limit)) {
                 $this->errors[] = 'Podaj poprawną wartość miesięcznego limitu dla kategorii.';
             }
@@ -67,32 +67,20 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
 
         $this->id = $data['category_id'];
         $this->name = $data['category_name'];
-
-        if(isset($data['monthly_limit'])) {
-            $this->monthly_limit = $data['monthly_limit'];
-        }
+        $this->monthly_limit = isset($data['monthly_limit']) && $data['monthly_limit'] != '' ?  $data['monthly_limit'] : null;
 
         $this->validate();
 
         if(empty($this->errors)) {
 
-            $sql = 'UPDATE expenses_category_assigned_to_users SET name = :name';
-
-            if(isset($this->monthly_limit)) {
-                $sql .= ' , monthly_limit = :monthly_limit';
-            }
-
-            $sql .= ' WHERE id = :id;';
+            $sql = 'UPDATE expenses_category_assigned_to_users SET name = :name, monthly_limit = :monthly_limit WHERE id = :id;';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-
-            if(isset($this->monthly_limit)) {
-                $stmt->bindValue(':monthly_limit', $this->monthly_limit, PDO::PARAM_STR);
-            }
+            $stmt->bindValue(':monthly_limit', $this->monthly_limit, PDO::PARAM_STR);
 
             return $stmt->execute();
         }
