@@ -38,7 +38,7 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
 
     public function getAll() {
 
-        $sql = 'SELECT id, name FROM expenses_category_assigned_to_users WHERE user_id=:logged_user_id;';
+        $sql = 'SELECT id, name, monthly_limit FROM expenses_category_assigned_to_users WHERE user_id=:logged_user_id;';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -67,6 +67,10 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
 
         $this->id = $data['category_id'];
         $this->name = $data['category_name'];
+
+        if(isset($data['monthly_limit'])) {
+            $this->monthly_limit = $data['monthly_limit'];
+        }
 
         $this->validate();
 

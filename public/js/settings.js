@@ -202,18 +202,28 @@ $(document).ready(function() {
         }
     });
 
-    // For expense category edit - ignore actual category name
-    let expenseCategoryIgnoreID = null;
-
     // --- Expense categories settings ---
 
     $('button[data-target="#expenseCategoryEditModal"]').click(function () {
 
-        const element = $(this).parent().siblings();
+        $('input#editCategoryLimitCheck').prop('checked', false);
+        $('input#editCategoryLimitInput').prop('disabled', true);
+        $('input#editCategoryLimitInput').val('');
+
+
+        const element = $(this).parent().siblings('p');
 
         const id = element.attr('data-id');
-        const category = element.text();
+        const category = element.children('span').text();
+        const limit = element.find('i').find('span').text();
+
         expenseCategoryIgnoreID = id;
+
+        if(limit) {
+            $('input#editCategoryLimitCheck').prop('checked', true);
+            $('input#editCategoryLimitInput').prop('disabled', false);
+            $('input#editCategoryLimitInput').val(limit);
+        }
 
         $('form#formExpenseCategoryEdit input[name="category_id"]').val(id);
         $('form#formExpenseCategoryEdit input[name="category_name"]').val(category);
@@ -269,6 +279,17 @@ $(document).ready(function() {
 
     });
 
+    $.validator.addMethod('validMonthlyLimit',
+        function(value, element, param) {
+            if (value != '') {
+                if (value.match(/^\d{1,15}(\.\d{0,2})?$/) == null) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        'Podaj poprawną wartość miesięcznego limitu dla kategorii - maksymalnie 17 cyfr w tym 2 po przecinku.'
+    );
 
     $('#formExpenseCategoryEdit').validate({
         rules: {
@@ -283,6 +304,9 @@ $(document).ready(function() {
                         }
                     }
                 }
+            },
+            monthly_limit: {
+                validMonthlyLimit: true
             }
         },
         messages: {
@@ -320,6 +344,7 @@ $(document).ready(function() {
             $('input#editCategoryLimitInput').prop('disabled', false);
         } else {
             $('input#editCategoryLimitInput').prop('disabled', true);
+            $('input#editCategoryLimitInput').val('');
         }
     });
 

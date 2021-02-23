@@ -96,6 +96,19 @@
 <script src="/js/hideShowPassword.min.js"></script>
 <script>
     let userID = {{ user.id }};
+
+    /* For expense category edit - ignore actual category name
+       If errors from server - remember id
+     */
+
+    let expenseCategoryIgnoreID = '';
+    let expenseCategoryId = $('#formExpenseCategoryEdit input[name="category_id"]').val();
+
+    if(expenseCategoryId) {
+        expenseCategoryIgnoreID = expenseCategoryId;
+    }
+
+
 </script>
 <script src="/js/settings.js"></script>
 {% endblock %}
