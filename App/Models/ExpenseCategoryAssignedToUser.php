@@ -92,17 +92,35 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
 
         $this->name = $data['category_name'];
 
+        if(isset($data['monthly_limit'])  && $data['monthly_limit'] != '') {
+            $this->monthly_limit = $data['monthly_limit'];
+        }
+
         $this->validate();
 
         if(empty($this->errors)) {
 
-            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:user_id, :name);';
+            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name';
+              if(isset($this->monthly_limit)) {
+                  $sql .= ', monthly_limit';
+              }
 
+            $sql .= ') VALUES (:user_id, :name';
+
+            if(isset($this->monthly_limit)) {
+                $sql .= ', :monthly_limit';
+            }
+
+            $sql .= ');';
+            
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            if(isset($this->monthly_limit)) {
+                $stmt->bindValue(':monthly_limit', $this->monthly_limit, PDO::PARAM_STR);
+            }
 
             return $stmt->execute();
         }

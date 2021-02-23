@@ -323,6 +323,9 @@ $(document).ready(function() {
                 required: true,
                 validCategoryName: true,
                 remote: '/account/validate-expense-category'
+            },
+            monthly_limit: {
+                validMonthlyLimit: true
             }
         },
         messages: {
