@@ -235,9 +235,10 @@ $(document).ready(function() {
 
         $('form#formExpenseCategoryDelete .alert').addClass('d-none');
 
-        const element = $(this).parent().siblings();
+        const element = $(this).parent().siblings('p');
+        
         const id = element.attr('data-id');
-        const category = element.text();
+        const category = element.children('span').text();
 
         $('form#formExpenseCategoryDelete input[name="category_id"]').val(id);
         $('form#formExpenseCategoryDelete label strong').text(category);

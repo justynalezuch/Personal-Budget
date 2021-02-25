@@ -74,7 +74,7 @@ class Expense extends \Core\Model
 
     public static function findByCategory($category_id) {
 
-        $sql = 'SELECT * FROM expenses WHERE expense_category_assigned_to_user_id = :category_id;';
+        $sql = 'SELECT * FROM expenses WHERE expense_category_assigned_to_user_id = :category_id ORDER BY date_of_expense DESC;';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);

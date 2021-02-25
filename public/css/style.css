@@ -221,4 +221,8 @@ label.error {
   width: 100%;
 }
 
+.form-check label, .form-check input {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=style.css.map */
