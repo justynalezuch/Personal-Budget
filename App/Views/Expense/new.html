@@ -70,21 +70,39 @@
                         </div>
                         <input type="hidden" id="fr_paymentMethod" value="{{expense.payment_method}}">
                     </div>
-                    <div class="form-group row">
-                        <label for="category" class="col-sm-2 col-form-label">Kategoria</label>
-                        <div class="col-sm-10">
-                            <select class="form-control"
-                                    id="category"
-                                    name="category"
-                                    aria-describedby="validationServer04" required>
-                                    <option disabled selected value> -- Wybierz kategorię -- </option>
-                                    {% for category in expense_categories %}
-                                    <option value="{{ category.id }}">{{ category.name }}</option>
-                                    {% endfor %}
-                            </select>
+                    <fieldset class="form-group">
+                        <legend class="col-form-label text-center">Kategoria</legend>
+                        <div class="py-3 pl-5">
+                            {% for category in expense_categories %}
+                            <div class="form-check py-2">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="category"
+                                       id="{{ category.slug }}"
+                                       value="{{ category.id }}">
+                                <label class="form-check-label" for="{{ category.slug }}">{{ category.name }}</label>
+                                {% if category.monthly_limit is not empty %}
+                                <i class="text-muted ml-2">Limit: {{ category.monthly_limit }}</i>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
                         </div>
-                        <input type="hidden" id="fr_category" value="{{expense.category}}">
-                    </div>
+                    </fieldset>
+<!--                    <div class="form-group row">-->
+<!--                        <label for="category" class="col-sm-2 col-form-label">Kategoria</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <select class="form-control"-->
+<!--                                    id="category"-->
+<!--                                    name="category"-->
+<!--                                    aria-describedby="validationServer04" required>-->
+<!--                                    <option disabled selected value> &#45;&#45; Wybierz kategorię &#45;&#45; </option>-->
+<!--                                    {% for category in expense_categories %}-->
+<!--                                    <option value="{{ category.id }}">{{ category.name }}</option>-->
+<!--                                    {% endfor %}-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <input type="hidden" id="fr_category" value="{{expense.category}}">-->
+<!--                    </div>-->
                     <div class="form-group">
                         <label for="comment">Komentarz</label>
                         <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Dodaj komentarz (opcjonalnie)">{{expense.comment}}</textarea>
@@ -122,7 +140,7 @@
         });
     });
 
-    $('select#category').on('change', function() {
+    $('input[name="category"]').on('change', function() {
 
         let id = this.value;
         let amount = $('input#amount').val();
@@ -135,7 +153,7 @@
                 amount: amount
             },
             success : function(response) {
-               console.log(response);
+               console.log(JSON.parse(response));
             },
             error : function() {
                 console.log('Wystąpił błąd z połączeniem');

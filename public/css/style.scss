@@ -208,7 +208,7 @@ blockquote {
   margin-top: 5px;
 }
 
-.add-income {
+.add-income, .add-expense {
   legend {
     background: #f2f6fa;
     border: 1px solid #ced4da;
@@ -216,7 +216,6 @@ blockquote {
     width: 50%;
   }
   fieldset {
-    text-align: center;
     border: 1px solid #ced4da;
     border-radius: 5px;
   }

@@ -53,6 +53,9 @@ class Account extends \Core\Controller
         echo json_encode($is_valid);
     }
 
+    /**
+     * For warning before delete expense category
+     */
     public function findExpenseByCategoryAction(){
 
         echo (json_encode(Expense::findByCategory($_GET['category_id'])));
@@ -62,7 +65,31 @@ class Account extends \Core\Controller
 
         $expense_categories = new ExpenseCategoryAssignedToUser();
 
-        var_dump($expense_categories->getExpenseCategoryLimit($_POST['category_id']));
+        $montly_limit = $expense_categories->getExpenseCategoryLimit($_POST['category_id']);
+
+        $expenses = Expense::findByCategoryAndPeriod($_POST['category_id']);
+
+        if($montly_limit) {
+
+        }
+
+        // CHECK DIFFERENCE
+
+        // CALCULATE DIFFERENCE
+
+        // IF MINUS -> RETURN VALUE
+
+        /*
+         * Return:
+         * limit
+         * expenses
+         *
+         *
+         */
+        echo json_encode($expenses);
+
+
+
 
     }
 

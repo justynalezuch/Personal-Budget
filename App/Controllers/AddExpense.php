@@ -74,9 +74,9 @@ class AddExpense extends Authenticated
 
         $paymentMethods = PaymentMethodAssignedToUser::getAll();
 
-//        foreach ($paymentMethods as $key => $method) {
-//            $paymentMethods[$key]['slug'] = static::createSlugFromString($method['name']);
-//        }
+        foreach ($paymentMethods as $key => $method) {
+            $paymentMethods[$key]['slug'] = static::createSlugFromString($method['name']);
+        }
 
         return $paymentMethods;
     }

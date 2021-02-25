@@ -62,9 +62,10 @@ $(document).ready(function () {
         if($("#fr_income_category").val()) {
             let fr_income_category = $("#fr_income_category").val();
             $(`input:radio[name=category][value=${fr_income_category}]`).attr('checked', true);
-        } else {
-            $("input:radio[name=category]:first").attr('checked', true);
         }
+        // else {
+        //     $("input:radio[name=category]:first").attr('checked', true);
+        // }
     }
 
     // Add expense, add income - if isset date - remember it

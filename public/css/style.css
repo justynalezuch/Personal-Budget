@@ -167,14 +167,13 @@ blockquote p {
   margin-top: 5px;
 }
 
-.add-income legend {
+.add-income legend, .add-expense legend {
   background: #f2f6fa;
   border: 1px solid #ced4da;
   border-radius: 5px;
   width: 50%;
 }
-.add-income fieldset {
-  text-align: center;
+.add-income fieldset, .add-expense fieldset {
   border: 1px solid #ced4da;
   border-radius: 5px;
 }

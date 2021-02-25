@@ -111,6 +111,18 @@ class Expense extends \Core\Model
         return false;
     }
 
+    public static function findByCategoryAndPeriod($category_id) {
 
+        $sql = 'SELECT sum(amount) AS sum FROM expenses 
+                WHERE (expense_category_assigned_to_user_id = :category_id AND date_of_expense >= :first_date AND date_of_expense <= :second_date)';
 
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':first_date',  date('Y-m-01'), PDO::PARAM_STR);
+        $stmt->bindValue(':second_date', date('Y-m-d'), PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
 }
