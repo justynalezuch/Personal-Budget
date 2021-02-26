@@ -9,6 +9,11 @@
 
     <main class="add-expense pb-5">
         <div class="row justify-content-center">
+            <div class="col-12 mt-2">
+                <div class="alert alert-danger">
+                    sdasd
+                </div>
+            </div>
             <div class="col-lg-5 col-md-6">
                 <h1 class="py-md-5 py-4 text-center">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-graph-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +87,7 @@
                                        value="{{ category.id }}">
                                 <label class="form-check-label" for="{{ category.slug }}">{{ category.name }}</label>
                                 {% if category.monthly_limit is not empty %}
-                                <i class="text-muted ml-2">Limit: {{ category.monthly_limit }}</i>
+                                <i class="text-muted ml-2">(Limit: {{ category.monthly_limit }})</i>
                                 {% endif %}
                             </div>
                             {% endfor %}
@@ -142,24 +147,55 @@
 
     $('input[name="category"]').on('change', function() {
 
-        let id = this.value;
+        let category_id = this.value;
+        let category_name = $(this).next('label:first').html();
         let amount = $('input#amount').val();
 
-        $.ajax({
-            url : `/account/check-expense-category-limit`,
-            type: 'POST',
-            data: {
-                category_id: id,
-                amount: amount
-            },
-            success : function(response) {
-               console.log(JSON.parse(response));
-            },
-            error : function() {
-                console.log('Wystąpił błąd z połączeniem');
-            }
-        });
+       if (amount != '') {
+            $.ajax({
+                url: `/account/check-expense-category-limit`,
+                type: 'POST',
+                data: {
+                    category_id: category_id,
+                    amount: amount
+                },
+                success: function (response) {
+                    if(response) {
+                        const data = JSON.parse(response);
+                        console.log(data.to_spend);
+                    }
+                },
+                error: function () {
+                    console.log('Wystąpił błąd z połączeniem');
+                }
+            });
+       }
+    });
+
+   /*
+   $('input#amount').on('keypress', function() {
+
+        let amount = this.value;
+        let category_id = $('input[name="category"]:checked').val();
+
+        if(category_id) {
+            $.ajax({
+                url: `/account/check-expense-category-limit`,
+                type: 'POST',
+                data: {
+                    category_id: category_id,
+                    amount: amount
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function () {
+                    console.log('Wystąpił błąd z połączeniem');
+                }
+            });
+        }
 
     });
+    */
 </script>
 {% endblock %}

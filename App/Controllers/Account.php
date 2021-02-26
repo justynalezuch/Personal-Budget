@@ -63,34 +63,27 @@ class Account extends \Core\Controller
 
     public function checkExpenseCategoryLimitAction(){
 
+        $amount =  $_POST['amount'];
+        $category_id =  $_POST['category_id'];
+
         $expense_categories = new ExpenseCategoryAssignedToUser();
 
-        $montly_limit = $expense_categories->getExpenseCategoryLimit($_POST['category_id']);
-
-        $expenses = Expense::findByCategoryAndPeriod($_POST['category_id']);
+        $montly_limit = $expense_categories->getExpenseCategoryLimit($category_id);
+        $expenses = Expense::findByCategoryAndPeriod($category_id);
 
         if($montly_limit) {
 
+            $to_spend = $montly_limit - $expenses;
+            $data = [
+                'expenses' => $expenses,
+                'montly_limit' => $montly_limit,
+                'to_spend' => $to_spend,
+                'status' => $to_spend < $amount ? 'danger' : 'success',
+                'total_amount' => $expenses + $amount
+            ];
+
+            echo json_encode($data);
         }
-
-        // CHECK DIFFERENCE
-
-        // CALCULATE DIFFERENCE
-
-        // IF MINUS -> RETURN VALUE
-
-        /*
-         * Return:
-         * limit
-         * expenses
-         *
-         *
-         */
-        echo json_encode($expenses);
-
-
-
-
     }
 
 

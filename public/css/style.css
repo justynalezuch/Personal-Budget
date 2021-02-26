@@ -224,5 +224,8 @@ label.error {
 .form-check label, .form-check input {
   cursor: pointer;
 }
+.form-check label:hover, .form-check input:hover {
+  color: #e28422;
+}
 
 /*# sourceMappingURL=style.css.map */

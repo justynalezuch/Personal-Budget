@@ -277,6 +277,10 @@ label.error {
 .form-check {
   label, input {
     cursor: pointer;
+
+    &:hover {
+      color: $orange;
+    }
   }
 }
 
