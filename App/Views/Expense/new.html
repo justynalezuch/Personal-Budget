@@ -9,9 +9,30 @@
 
     <main class="add-expense pb-5">
         <div class="row justify-content-center">
-            <div class="col-12 mt-2">
-                <div class="alert alert-danger">
-                    sdasd
+            <div class="col-12 mt-3">
+                <div class="d-none" id="limitInfo">
+                    <p>
+                        <b>Informacja o limicie:</b> Możesz jeszcze wydać <b class="to_spend"></b> w kategorii <b class="category"></b>
+                    </p>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-0">Limit:</p>
+                            <p class="mb-0"><b class="montly_limit"></b></p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0">Dotychczas wydano:</p>
+                            <p class="mb-0"><b class="expenses"></b></p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0">Różnica:</p>
+                            <p class="mb-0"><b class="to_spend"></b></p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0">Wydatki + wpisana kwota:</p>
+                            <p class="mb-0"><b class="total_amount"></b></p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-5 col-md-6">
@@ -79,7 +100,7 @@
                         <legend class="col-form-label text-center">Kategoria</legend>
                         <div class="py-3 pl-5">
                             {% for category in expense_categories %}
-                            <div class="form-check py-2">
+                            <div class="form-check py-1">
                                 <input class="form-check-input"
                                        type="radio"
                                        name="category"
@@ -151,7 +172,11 @@
         let category_name = $(this).next('label:first').html();
         let amount = $('input#amount').val();
 
-       if (amount != '') {
+        $(`#limitInfo`).addClass(`d-none`);
+        $(`#limitInfo`).removeClass('alert-success');
+        $(`#limitInfo`).removeClass('alert-danger');
+
+        if (amount != '') {
             $.ajax({
                 url: `/account/check-expense-category-limit`,
                 type: 'POST',
@@ -162,7 +187,13 @@
                 success: function (response) {
                     if(response) {
                         const data = JSON.parse(response);
-                        console.log(data.to_spend);
+
+                        $(`#limitInfo`).removeClass(`d-none`);
+                        $(`#limitInfo`).addClass(`alert alert-${data.status}`);
+
+                        Object.keys(data).forEach(function(key) {
+                            $(`#limitInfo b.${key}`).html(data[key]);
+                        });
                     }
                 },
                 error: function () {
@@ -172,13 +203,17 @@
        }
     });
 
-   /*
-   $('input#amount').on('keypress', function() {
+   $('input#amount').on('keyup', function() {
 
-        let amount = this.value;
-        let category_id = $('input[name="category"]:checked').val();
+       let amount = this.value;
+       let category_name = $('input[name="category"]:checked').next('label:first').html();
+       let category_id = $('input[name="category"]:checked').val();
 
-        if(category_id) {
+     //  $(`#limitInfo`).addClass(`d-none`);
+       $(`#limitInfo`).removeClass('alert-success');
+       $(`#limitInfo`).removeClass('alert-danger');
+
+       if(category_id) {
             $.ajax({
                 url: `/account/check-expense-category-limit`,
                 type: 'POST',
@@ -187,7 +222,16 @@
                     amount: amount
                 },
                 success: function (response) {
-                    console.log(response);
+                    if(response) {
+                        const data = JSON.parse(response);
+
+                        //$(`#limitInfo`).removeClass(`d-none`);
+                        $(`#limitInfo`).addClass(`alert alert-${data.status}`);
+
+                        Object.keys(data).forEach(function(key) {
+                            $(`#limitInfo b.${key}`).html(data[key]);
+                        });
+                    }
                 },
                 error: function () {
                     console.log('Wystąpił błąd z połączeniem');
@@ -196,6 +240,6 @@
         }
 
     });
-    */
+
 </script>
 {% endblock %}
