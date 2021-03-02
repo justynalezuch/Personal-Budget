@@ -10,7 +10,7 @@
     <main class="add-expense pb-5">
         <div class="row justify-content-center">
             <div class="col-12 mt-3">
-                <div class="d-none" id="limitInfo">
+                <div class="alert d-none" id="limitInfo">
                     <p>
                         <b>Informacja o limicie:</b> Możesz jeszcze wydać <b class="to_spend"></b> w kategorii <b class="category"></b>
                     </p>
@@ -172,7 +172,6 @@
         let category_name = $(this).next('label:first').html();
         let amount = $('input#amount').val();
 
-        $(`#limitInfo`).addClass(`d-none`);
         $(`#limitInfo`).removeClass('alert-success');
         $(`#limitInfo`).removeClass('alert-danger');
 
@@ -189,18 +188,25 @@
                         const data = JSON.parse(response);
 
                         $(`#limitInfo`).removeClass(`d-none`);
-                        $(`#limitInfo`).addClass(`alert alert-${data.status}`);
+                        $(`#limitInfo`).addClass(`alert-${data.status}`);
 
                         Object.keys(data).forEach(function(key) {
                             $(`#limitInfo b.${key}`).html(data[key]);
                         });
+
+                        $(`#limitInfo b.category`).html(category_name);
+                    }
+                    else {
+                        $(`#limitInfo`).addClass(`d-none`);
                     }
                 },
                 error: function () {
                     console.log('Wystąpił błąd z połączeniem');
                 }
             });
-       }
+       } else {
+            $(`#limitInfo`).addClass(`d-none`);
+        }
     });
 
    $('input#amount').on('keyup', function() {
@@ -209,11 +215,10 @@
        let category_name = $('input[name="category"]:checked').next('label:first').html();
        let category_id = $('input[name="category"]:checked').val();
 
-     //  $(`#limitInfo`).addClass(`d-none`);
        $(`#limitInfo`).removeClass('alert-success');
        $(`#limitInfo`).removeClass('alert-danger');
 
-       if(category_id) {
+       if(category_id && amount) {
             $.ajax({
                 url: `/account/check-expense-category-limit`,
                 type: 'POST',
@@ -225,20 +230,23 @@
                     if(response) {
                         const data = JSON.parse(response);
 
-                        //$(`#limitInfo`).removeClass(`d-none`);
-                        $(`#limitInfo`).addClass(`alert alert-${data.status}`);
+                        $(`#limitInfo`).removeClass(`d-none`);
+                        $(`#limitInfo`).addClass(`alert-${data.status}`);
 
                         Object.keys(data).forEach(function(key) {
                             $(`#limitInfo b.${key}`).html(data[key]);
                         });
+
+                        $(`#limitInfo b.category`).html(category_name);
                     }
                 },
                 error: function () {
                     console.log('Wystąpił błąd z połączeniem');
                 }
             });
-        }
-
+        } else {
+           $(`#limitInfo`).addClass(`d-none`);
+       }
     });
 
 </script>

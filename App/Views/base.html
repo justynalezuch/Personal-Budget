@@ -25,6 +25,26 @@
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        jQuery.extend(jQuery.validator.messages, {
+            number: "Wprowadź liczbę w prawidłowym formacie.",
+            required: "To pole jest wymagane.",
+            email: "Wprowadź adres email w prawidłowym formacie.",
+            minlength: jQuery.validator.format("Wprowadź co najmniej {0} znaków."),
+            // url: "Please enter a valid URL.",
+            // dateISO: "Please enter a valid date (ISO).",
+            // remote: "Please fix this field.",
+            // date: "Please enter a valid date.",
+            // digits: "Please enter only digits.",
+            // creditcard: "Please enter a valid credit card number.",
+            // accept: "Please enter a value with a valid extension.",
+            // maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+            // rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+            // range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+            // max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+            // min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+        });
+    </script>
     {% block footer %}
     {% endblock %}
 </body>

@@ -73,13 +73,14 @@ class Account extends \Core\Controller
 
         if($montly_limit) {
 
-            $to_spend = $montly_limit - $expenses;
+            $to_spend = number_format($montly_limit - $expenses, 2, '.', '');
+
             $data = [
-                'expenses' => $expenses,
+                'expenses' => $expenses != '' ? $expenses : '0',
                 'montly_limit' => $montly_limit,
                 'to_spend' => $to_spend,
                 'status' => $to_spend < $amount ? 'danger' : 'success',
-                'total_amount' => $expenses + $amount
+                'total_amount' => number_format($expenses + $amount, 2, '.', '')
             ];
 
             echo json_encode($data);
