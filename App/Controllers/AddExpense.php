@@ -15,15 +15,14 @@ class AddExpense extends Authenticated
     {
         parent::before();
         $this->expense_categories = new ExpenseCategoryAssignedToUser();
+        $this->payment_methods = new PaymentMethodAssignedToUser();
     }
 
     public function newAction() {
 
-        $paymentMethods = static::getPaymentMethods();
-
         View::renderTemplate('Expense/new.html', [
             'expense_categories' => $this->getExpenseCategories(),
-            'payment_methods' => $paymentMethods,
+            'payment_methods' => $this->getPaymentMethods(),
         ]);
     }
 
@@ -37,26 +36,13 @@ class AddExpense extends Authenticated
             $this->redirect('/add-expense/new');
 
         } else {
-            $paymentMethods = static::getPaymentMethods();
-
             View::renderTemplate('Expense/new.html', [
                 'expense_categories' => $this->getExpenseCategories(),
-                'payment_methods' => $paymentMethods,
+                'payment_methods' => $this->getPaymentMethods(),
                 'expense' => $expense,
             ]);
         }
 
-    }
-
-    /**
-     * Create lowercase slug
-     *
-     * @param $string
-     * @return string
-     */
-    public static function createSlugFromString($string) {
-        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
-        return strtolower($slug);
     }
 
     public function getExpenseCategories() {
@@ -70,9 +56,9 @@ class AddExpense extends Authenticated
         return $expenseCategories;
     }
 
-    public static function getPaymentMethods() {
+    public function getPaymentMethods() {
 
-        $paymentMethods = PaymentMethodAssignedToUser::getAll();
+        $paymentMethods = $this->payment_methods->getAll();
 
         foreach ($paymentMethods as $key => $method) {
             $paymentMethods[$key]['slug'] = static::createSlugFromString($method['name']);
@@ -81,6 +67,14 @@ class AddExpense extends Authenticated
         return $paymentMethods;
     }
 
-
-
+    /**
+     * Create lowercase slug
+     *
+     * @param $string
+     * @return string
+     */
+    public static function createSlugFromString($string) {
+        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+        return strtolower($slug);
+    }
 }

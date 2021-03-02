@@ -11,6 +11,7 @@ use App\Models\Income;
 use App\Models\Expense;
 use App\Models\IncomeCategoryAssignedToUser;
 use App\Models\ExpenseCategoryAssignedToUser;
+use App\Models\PaymentMethodAssignedToUser;
 
 class Settings extends Authenticated
 {
@@ -35,6 +36,7 @@ class Settings extends Authenticated
         $this->user = Auth::getUser();
         $this->income_categories = new IncomeCategoryAssignedToUser();
         $this->expense_categories = new ExpenseCategoryAssignedToUser();
+        $this->payment_methods = new PaymentMethodAssignedToUser();
     }
 
     private function renderTemplate() {
