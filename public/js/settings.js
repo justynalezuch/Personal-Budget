@@ -77,12 +77,28 @@ $(document).ready(function() {
         $('#userModal').modal('show');
     }
 
-    if(url.includes('income-category-update')) {
+    else if(url.includes('income-category-update')) {
         $('#incomeCategoryEditModal').modal('show');
     }
 
-    if(url.includes('expense-category-update')) {
+    else if(url.includes('expense-category-update')) {
         $('#expenseCategoryEditModal').modal('show');
+    }
+
+    else if(url.includes('payment-method-update')) {
+        $('#paymentMethodEditModal').modal('show');
+    }
+
+    else if(url.includes('income-category-new')) {
+        $('#incomeCategoryAddModal').modal('show');
+    }
+
+    else if(url.includes('expense-category-new')) {
+        $('#expenseCategoryAddModal').modal('show');
+    }
+
+    else if(url.includes('payment-method-new')) {
+        $('#paymentMethodAddModal').modal('show');
     }
 
 
@@ -377,13 +393,17 @@ $(document).ready(function() {
 
 
         $.ajax({
-            url : `/account/find-expense-by-payment_method?payment_method_id=${id}`,
+            url: `/account/find-expense-by-payment-method`,
+            type: 'POST',
+            data: {
+                payment_method_id: id
+            },
             success : function(response) {
                 let expenses = JSON.parse(response);
                 if(expenses.length) {
                     $('form#formPaymentMethodDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to usunięcie wszystkich przychodów z wybraną metodą płatności:</p>
+                    let text = `<p>Spowoduje to usunięcie wszystkich wydatków z wybraną metodą płatności:</p>
 
                             <table class="table table-light table-sm">
                               <tr>
@@ -419,7 +439,7 @@ $(document).ready(function() {
                 required: true,
                 validName: true,
                 remote: {
-                    url: '/account/validate-payment_method',
+                    url: '/account/validate-payment-method',
                     data: {
                         ignore_id: function () {
                             return paymentMethodIgnoreID;
@@ -440,7 +460,7 @@ $(document).ready(function() {
             payment_method_name: {
                 required: true,
                 validName: true,
-                remote: '/account/validate-payment_method'
+                remote: '/account/validate-payment-method'
             }
         },
         messages: {
@@ -449,8 +469,4 @@ $(document).ready(function() {
             }
         }
     });
-
-
-
-
 });

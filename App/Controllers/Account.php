@@ -7,6 +7,7 @@ use App\Models\Income;
 use App\Models\Expense;
 use App\Models\IncomeCategoryAssignedToUser;
 use App\Models\ExpenseCategoryAssignedToUser;
+use App\Models\PaymentMethodAssignedToUser;
 
 
 /**
@@ -61,6 +62,24 @@ class Account extends \Core\Controller
         echo (json_encode(Expense::findByCategory($_GET['category_id'])));
     }
 
+    /**
+     * For warning before delete payment method
+     */
+    public function findExpenseByPaymentMethodAction(){
+
+       echo (json_encode(Expense::findByPaymentMethod($_POST['payment_method_id'])));
+    }
+
+    public function validatePaymentMethodAction()
+    {
+        $expense_categories = new PaymentMethodAssignedToUser();
+
+        $is_valid = ! $expense_categories->methodExists($_GET['payment_method_name'], $_GET['ignore_id'] ?? null);
+
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
     public function checkExpenseCategoryLimitAction(){
 
         $amount =  $_POST['amount'];
@@ -86,9 +105,5 @@ class Account extends \Core\Controller
             echo json_encode($data);
         }
     }
-
-
-
-
 
 }

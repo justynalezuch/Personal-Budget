@@ -9,6 +9,7 @@ $red: #ff0000;
 html, body {
   height: 100%;
 }
+
 body {
   font-size: 14px;
   &.bg-img {
@@ -20,9 +21,10 @@ body {
   &.bg {
     background-color: #f2f6fa;
     overflow-x: hidden;
-    .container {
+    > .container {
       background: #fff;
       border-radius: 0 0 5px 5px;
+      box-shadow: 0 10px 40px 0 rgb(0 0 0 / 20%);
     }
   }
 }
@@ -218,6 +220,28 @@ blockquote {
   fieldset {
     border: 1px solid #ced4da;
     border-radius: 5px;
+    > div {
+      height: 200px;
+      overflow-y: auto;
+
+      &::-webkit-scrollbar-track
+      {
+        border-radius: 10px;
+        background-color: #ebebeb;
+      }
+
+      &::-webkit-scrollbar
+      {
+        width: 12px;
+        background-color: #F5F5F5;
+      }
+
+      &::-webkit-scrollbar-thumb
+      {
+        border-radius: 10px;
+        background-color: #989898;
+      }
+    }
   }
 
 }

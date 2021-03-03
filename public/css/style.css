@@ -13,9 +13,10 @@ body.bg {
   background-color: #f2f6fa;
   overflow-x: hidden;
 }
-body.bg .container {
+body.bg > .container {
   background: #fff;
   border-radius: 0 0 5px 5px;
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.2);
 }
 
 h1 {
@@ -176,6 +177,22 @@ blockquote p {
 .add-income fieldset, .add-expense fieldset {
   border: 1px solid #ced4da;
   border-radius: 5px;
+}
+.add-income fieldset > div, .add-expense fieldset > div {
+  height: 200px;
+  overflow-y: auto;
+}
+.add-income fieldset > div::-webkit-scrollbar-track, .add-expense fieldset > div::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #ebebeb;
+}
+.add-income fieldset > div::-webkit-scrollbar, .add-expense fieldset > div::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5;
+}
+.add-income fieldset > div::-webkit-scrollbar-thumb, .add-expense fieldset > div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #989898;
 }
 
 label[id$=-error] {

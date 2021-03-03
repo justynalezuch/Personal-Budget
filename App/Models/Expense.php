@@ -71,6 +71,16 @@ class Expense extends \Core\Model
         }
         return false;
     }
+    public static function expenseExists($category_id) {
+
+        $expense = static::findByCategory($category_id);
+
+        if($expense) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static function findByCategory($category_id) {
 
@@ -85,30 +95,17 @@ class Expense extends \Core\Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function expenseExists($category_id) {
+    public static function findByPaymentMethod($payment_method_id) {
 
-        $expense = static::findByCategory($category_id);
-
-        if($expense) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static function delete($category_id) {
-
-        $sql = 'DELETE FROM expenses WHERE expense_category_assigned_to_user_id = :category_id;';
+        $sql = 'SELECT * FROM expenses WHERE payment_method_assigned_to_user_id = :payment_method_id ORDER BY date_of_expense DESC;';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':payment_method_id', $payment_method_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
+        $stmt->execute();
 
-            return true;
-        }
-        return false;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function findByCategoryAndPeriod($category_id) {
@@ -125,4 +122,35 @@ class Expense extends \Core\Model
 
         return $stmt->fetchColumn();
     }
+
+    public static function deleteByCategory($category_id) {
+
+        $sql = 'DELETE FROM expenses WHERE expense_category_assigned_to_user_id = :category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+
+        if($stmt->execute()){
+
+            return true;
+        }
+        return false;
+    }
+
+    public static function deleteByPaymentMethod($payment_method_id) {
+
+        $sql = 'DELETE FROM expenses WHERE payment_method_assigned_to_user_id = :payment_method_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':payment_method_id', $payment_method_id, PDO::PARAM_INT);
+
+        if($stmt->execute()){
+
+            return true;
+        }
+        return false;
+    }
+
 }
