@@ -150,7 +150,7 @@ $(document).ready(function() {
 
     });
 
-    $.validator.addMethod('validCategoryName',
+    $.validator.addMethod('validName',
         function(value, element, param) {
             if (value != '') {
                 if (value.match(/^[a-zA-Z\s]+$/) == null) {
@@ -159,14 +159,14 @@ $(document).ready(function() {
             }
             return true;
         },
-        'Nazwa kategori może składać się z liter oraz spacji.'
+        'Nazwa może składać się z liter oraz spacji.'
     );
 
     $('#formIncomeCategoryEdit').validate({
         rules: {
             category_name: {
                 required: true,
-                validCategoryName: true,
+                validName: true,
                 remote: {
                     url: '/account/validate-income-category',
                     data: {
@@ -188,7 +188,7 @@ $(document).ready(function() {
         rules: {
             category_name: {
                 required: true,
-                validCategoryName: true,
+                validName: true,
                 remote: '/account/validate-income-category'
             }
         },
@@ -293,7 +293,7 @@ $(document).ready(function() {
         rules: {
             category_name: {
                 required: true,
-                validCategoryName: true,
+                validName: true,
                 remote: {
                     url: '/account/validate-expense-category',
                     data: {
@@ -318,7 +318,7 @@ $(document).ready(function() {
         rules: {
             category_name: {
                 required: true,
-                validCategoryName: true,
+                validName: true,
                 remote: '/account/validate-expense-category'
             },
             monthly_limit: {
@@ -413,23 +413,11 @@ $(document).ready(function() {
 
     });
 
-    $.validator.addMethod('validPaymentMethodName',
-        function(value, element, param) {
-            if (value != '') {
-                if (value.match(/^[a-zA-Z\s]+$/) == null) {
-                    return false;
-                }
-            }
-            return true;
-        },
-        'Nazwa metody płatności może składać się z liter oraz spacji.'
-    );
-
     $('#formPaymentMethodEdit').validate({
         rules: {
             payment_method_name: {
                 required: true,
-                validPaymentMethodName: true,
+                validName: true,
                 remote: {
                     url: '/account/validate-payment_method',
                     data: {
@@ -451,7 +439,7 @@ $(document).ready(function() {
         rules: {
             payment_method_name: {
                 required: true,
-                validPaymentMethodName: true,
+                validName: true,
                 remote: '/account/validate-payment_method'
             }
         },
