@@ -28,7 +28,7 @@ class Settings extends Authenticated
      *
      * @var string
      */
-    private $active_tab = self::EXPENSE_CATEGORIES;
+    private $active_tab = self::PAYMENT_METHODS;
 
     public function before()
     {
@@ -45,6 +45,7 @@ class Settings extends Authenticated
             'user' => $this->user,
             'income_categories' => $this->income_categories,
             'expense_categories' => $this->expense_categories,
+            'payment_methods' => $this->payment_methods,
             'active_tab' => $this->active_tab
         ]);
     }
@@ -121,7 +122,6 @@ class Settings extends Authenticated
 
             Flash::addMessage('Kategoria została poprawnie edytowana.');
             $this->redirect('/settings');
-
 
         } else {
 

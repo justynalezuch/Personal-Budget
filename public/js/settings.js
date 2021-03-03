@@ -86,10 +86,7 @@ $(document).ready(function() {
     }
 
 
-    // --- Income categories settings ---
-
-    // For expense category edit - ignore actual category name
-    let incomeCategoryIgnoreID = null;
+    // ------------ Income categories settings ------------
 
     $('button[data-target="#incomeCategoryEditModal"]').click(function () {
 
@@ -202,7 +199,7 @@ $(document).ready(function() {
         }
     });
 
-    // --- Expense categories settings ---
+    // ------------ Expense categories settings ------------
 
     $('button[data-target="#expenseCategoryEditModal"]').click(function () {
 
@@ -210,7 +207,6 @@ $(document).ready(function() {
         $('input#editCategoryLimitCheck').prop('checked', false);
         $('input#editCategoryLimitInput').prop('disabled', true);
         $('input#editCategoryLimitInput').val('');
-
 
         const element = $(this).parent().siblings('p');
 
@@ -352,6 +348,121 @@ $(document).ready(function() {
             $('#editCategoryLimitInput').val('');
         }
     });
+
+    // ------------ Payment methods settings ------------
+
+    $('button[data-target="#paymentMethodEditModal"]').click(function () {
+
+        const element = $(this).parent().siblings();
+
+        const id = element.attr('data-id');
+        const payment_method = element.text();
+        paymentMethodIgnoreID = id;
+
+        $('form#formPaymentMethodEdit input[name="payment_method_id"]').val(id);
+        $('form#formPaymentMethodEdit input[name="payment_method_name"]').val(payment_method);
+
+    });
+
+    $('button[data-target="#paymentMethodDeleteModal"]').click(function () {
+
+        $('form#formPaymentMethodDelete .alert').addClass('d-none');
+
+        const element = $(this).parent().siblings();
+        const id = element.attr('data-id');
+        const payment_method = element.text();
+
+        $('form#formPaymentMethodDelete input[name="payment_method_id"]').val(id);
+        $('form#formPaymentMethodDelete label strong').text(payment_method);
+
+
+        $.ajax({
+            url : `/account/find-expense-by-payment_method?payment_method_id=${id}`,
+            success : function(response) {
+                let expenses = JSON.parse(response);
+                if(expenses.length) {
+                    $('form#formPaymentMethodDelete .alert').removeClass('d-none');
+
+                    let text = `<p>Spowoduje to usunięcie wszystkich przychodów z wybraną metodą płatności:</p>
+
+                            <table class="table table-light table-sm">
+                              <tr>
+                                <th>Lp.</th>
+                                <th>Kwota</th>
+                                <th>Data</th>
+                              </tr>`;
+
+                    $.each( expenses, function( index, value ){
+
+                        text += `<tr>
+                                    <td>${++index}.</td>
+                                    <td>${value.amount}</td>
+                                    <td>${value.date_of_expense}</td>
+                                </tr>`;
+                    });
+
+                    text += '</table>';
+
+                    $('form#formPaymentMethodDelete .alert').html(text);
+                }
+            },
+            error : function() {
+                console.log("Wystąpił błąd z połączeniem");
+            }
+        });
+
+    });
+
+    $.validator.addMethod('validPaymentMethodName',
+        function(value, element, param) {
+            if (value != '') {
+                if (value.match(/^[a-zA-Z\s]+$/) == null) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        'Nazwa metody płatności może składać się z liter oraz spacji.'
+    );
+
+    $('#formPaymentMethodEdit').validate({
+        rules: {
+            payment_method_name: {
+                required: true,
+                validPaymentMethodName: true,
+                remote: {
+                    url: '/account/validate-payment_method',
+                    data: {
+                        ignore_id: function () {
+                            return paymentMethodIgnoreID;
+                        }
+                    }
+                }
+            }
+        },
+        messages: {
+            payment_method_name: {
+                remote: "Istnieje już metoda płatności o podanej nazwie."
+            }
+        }
+    });
+
+    $('#formPaymentMethodAdd').validate({
+        rules: {
+            payment_method_name: {
+                required: true,
+                validPaymentMethodName: true,
+                remote: '/account/validate-payment_method'
+            }
+        },
+        messages: {
+            payment_method_name: {
+                remote: "Istnieje już metoda płatności o podanej nazwie."
+            }
+        }
+    });
+
+
 
 
 });

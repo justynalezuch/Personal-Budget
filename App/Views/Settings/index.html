@@ -102,13 +102,33 @@
      */
 
     let expenseCategoryIgnoreID = '';
-    let expenseCategoryId = $('#formExpenseCategoryEdit input[name="category_id"]').val();
+    const expenseCategoryId = $('#formExpenseCategoryEdit input[name="category_id"]').val();
 
     if(expenseCategoryId) {
         expenseCategoryIgnoreID = expenseCategoryId;
     }
 
+    /* For income category edit validation - ignore actual category name
+       If isset errors from server - remember ignore id
+     */
 
+    let incomeCategoryIgnoreID = '';
+    const incomeCategoryId = $('#formIncomeCategoryEdit input[name="category_id"]').val();
+
+    if(incomeCategoryId) {
+        incomeCategoryIgnoreID = incomeCategoryId;
+    }
+
+    /* For payment method edit validation - ignore actual category name
+       If isset errors from server - remember ignore id
+     */
+
+    let paymentMethodIgnoreID = '';
+    const paymentMethodId = $('#formPaymentMethodEdit input[name="payment_method_id"]').val();
+
+    if(paymentMethodId) {
+        paymentMethodIgnoreID = paymentMethodId;
+    }
 </script>
 <script src="/js/settings.js"></script>
 {% endblock %}
