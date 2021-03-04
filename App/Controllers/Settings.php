@@ -74,6 +74,9 @@ class Settings extends Authenticated
     public function userDeleteAction() {
 
         var_dump($_POST);
+        // Delete user
+        // Delete incomes and expenses
+        // Delete categories - incomes, expenses, payment_methods
     }
 
     public function userDeleteIncomesAndExpensesAction() {
@@ -81,7 +84,7 @@ class Settings extends Authenticated
         var_dump($_POST);
     }
 
-    public function incomeCategoryUpdateAction(){
+    public function incomeCategoryUpdateAction() {
 
         if($this->income_categories->update($_POST)) {
 
@@ -96,7 +99,7 @@ class Settings extends Authenticated
         }
     }
 
-    public function incomeCategoryNewAction(){
+    public function incomeCategoryNewAction() {
 
         if($this->income_categories->save($_POST)) {
 
@@ -111,9 +114,9 @@ class Settings extends Authenticated
         }
     }
 
-    public function incomeCategoryDeleteAction(){
+    public function incomeCategoryDeleteAction() {
 
-        if(Income::delete($_POST['category_id']) && $this->income_categories->delete($_POST['category_id'])) {
+        if(Income::delete('income_category_assigned_to_user_id', $_POST['category_id']) && $this->income_categories->delete($_POST['category_id'])) {
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
@@ -126,7 +129,7 @@ class Settings extends Authenticated
         }
     }
 
-    public function expenseCategoryUpdateAction(){
+    public function expenseCategoryUpdateAction() {
 
         if($this->expense_categories->update($_POST)) {
 
@@ -141,7 +144,7 @@ class Settings extends Authenticated
         }
     }
 
-    public function expenseCategoryNewAction(){
+    public function expenseCategoryNewAction() {
 
         if($this->expense_categories->save($_POST)) {
 
@@ -156,10 +159,9 @@ class Settings extends Authenticated
         }
     }
 
-    public function expenseCategoryDeleteAction()
-    {
+    public function expenseCategoryDeleteAction() {
 
-        if (Expense::deleteByCategory($_POST['category_id']) && $this->expense_categories->delete($_POST['category_id'])) {
+        if (Expense::delete('expense_category_assigned_to_user_id', $_POST['category_id']) && $this->expense_categories->delete($_POST['category_id'])) {
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
@@ -173,7 +175,7 @@ class Settings extends Authenticated
     }
 
 
-    public function paymentMethodUpdateAction(){
+    public function paymentMethodUpdateAction() {
 
         if($this->payment_methods->update($_POST)) {
 
@@ -188,7 +190,7 @@ class Settings extends Authenticated
         }
     }
 
-    public function paymentMethodNewAction(){
+    public function paymentMethodNewAction() {
 
         if($this->payment_methods->save($_POST)) {
 
@@ -203,9 +205,9 @@ class Settings extends Authenticated
         }
     }
 
-    public function paymentMethodDeleteAction(){
+    public function paymentMethodDeleteAction() {
 
-        if(Expense::deleteByPaymentMethod($_POST['payment_method_id']) && $this->payment_methods->delete($_POST['payment_method_id'])) {
+        if(Expense::delete('payment_method_assigned_to_user_id', $_POST['payment_method_id']) && $this->payment_methods->delete($_POST['payment_method_id'])) {
 
             Flash::addMessage('Metoda płatności została usunięta.');
             $this->redirect('/settings');

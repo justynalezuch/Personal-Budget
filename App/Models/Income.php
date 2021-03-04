@@ -90,13 +90,13 @@ class Income extends \Core\Model
         return false;
     }
 
-    public static function delete($category_id) {
+    public static function delete($record_name, $id) {
 
-        $sql = 'DELETE FROM incomes WHERE income_category_assigned_to_user_id = :category_id;';
+        $sql = "DELETE FROM incomes WHERE {$record_name}  = :id;";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         if($stmt->execute()){
 
@@ -104,4 +104,5 @@ class Income extends \Core\Model
         }
         return false;
     }
+
 }

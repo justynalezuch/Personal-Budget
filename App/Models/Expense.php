@@ -138,13 +138,13 @@ class Expense extends \Core\Model
         return false;
     }
 
-    public static function deleteByPaymentMethod($payment_method_id) {
+    public static function delete($record_name, $id) {
 
-        $sql = 'DELETE FROM expenses WHERE payment_method_assigned_to_user_id = :payment_method_id;';
+        $sql = "DELETE FROM expenses WHERE {$record_name}  = :id;";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':payment_method_id', $payment_method_id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         if($stmt->execute()){
 
