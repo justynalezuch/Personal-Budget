@@ -73,10 +73,29 @@ class Settings extends Authenticated
 
     public function userDeleteAction() {
 
-        var_dump($_POST);
-        // Delete user
-        // Delete incomes and expenses
-        // Delete categories - incomes, expenses, payment_methods
+        if ($this->user->delete($_POST['user_id'])) {
+
+            Auth::logout();
+            $this->redirect('/settings/show-deleted-account-message');
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+            $this->active_tab = self::USER;
+            $this->renderTemplate();
+        }
+
+        // Delete incomes and expenses ??
+        // Delete categories - incomes, expenses, payment_methods ??
+    }
+
+    /**
+     * Show a "deleted account" flash message.
+     */
+    public function showDeletedAccountMessage() {
+
+        Flash::addMessage('Twoje konto zostało usunięte');
+        $this->redirect('/');
     }
 
     public function userDeleteIncomesAndExpensesAction() {

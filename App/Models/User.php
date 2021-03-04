@@ -64,7 +64,7 @@ class User extends \Core\Model
             $this->errors[] = 'Podaj poprawny adres email.';
         }
 
-        if(static::emailExists($this->email, $this->id)) {
+        if(static::emailExists($this->email, $this->id ?? null)) {
             $this->errors[] = 'Istnieje już konto zarejestrowane na podany adres email.';
         }
 

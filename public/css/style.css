@@ -192,7 +192,7 @@ blockquote p {
 }
 .add-income fieldset > div::-webkit-scrollbar-thumb, .add-expense fieldset > div::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #989898;
+  background-color: #c6c6c6;
 }
 
 label[id$=-error] {

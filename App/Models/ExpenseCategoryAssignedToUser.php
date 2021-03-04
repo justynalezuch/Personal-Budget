@@ -127,6 +127,18 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         return false;
     }
 
+    public function getExpenseCategoryLimit($category_id) {
+
+        $sql = 'SELECT monthly_limit FROM expenses_category_assigned_to_users WHERE id = :category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+
     public function delete($category_id) {
 
         $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE id = :category_id;';
@@ -141,17 +153,17 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         return false;
     }
 
-    public function getExpenseCategoryLimit($category_id) {
+    public function deleteBasedOnUserId($user_id) {
 
-        $sql = 'SELECT monthly_limit FROM expenses_category_assigned_to_users WHERE id = :category_id;';
+        $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE user_id = :user_id;';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
-        $stmt->execute();
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-        return $stmt->fetchColumn();
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
     }
-
-
 }
