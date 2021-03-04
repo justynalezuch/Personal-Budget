@@ -28,7 +28,7 @@ class Settings extends Authenticated
      *
      * @var string
      */
-    private $active_tab = self::PAYMENT_METHODS;
+    private $active_tab = self::USER;
 
     public function before()
     {
@@ -69,6 +69,16 @@ class Settings extends Authenticated
             $this->renderTemplate();
         }
 
+    }
+
+    public function userDeleteAction() {
+
+        var_dump($_POST);
+    }
+
+    public function userDeleteIncomesAndExpensesAction() {
+
+        var_dump($_POST);
     }
 
     public function incomeCategoryUpdateAction(){

@@ -1,5 +1,5 @@
 <div class="row mt-3">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <dl>
             <dt>Nazwa użytkownika:</dt>
             <dd>{{user.name}}</dd>
@@ -7,18 +7,24 @@
             <dd>{{user.email}}</dd>
         </dl>
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
+        <button type="button" class="btn btn-primary mr-1" data-toggle="modal" data-target="#userEditModal">
             Edytuj
+        </button>
+        <button type="button" class="btn btn-outline-danger mx-1" data-toggle="modal" data-target="#userDeleteModal">
+            Usuń moje konto
+        </button>
+        <button type="button" class="btn btn-outline-danger mx-1" data-toggle="modal" data-target="#userDeleteIncomesAndExpensesModal">
+            Usuń wszystkie przychody i wydatki
         </button>
     </div>
 </div>
 
 <!-- Modal user edit -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">Użytkownik - edycja</h5>
+                <h5 class="modal-title" id="userEditModalLabel">Użytkownik - edycja</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -34,7 +40,7 @@
                 </ul>
                 {% endif %}
 
-                <form method="post" action="/settings/user-update" id="formUserSettings">
+                <form method="post" action="/settings/user-update" id="formUserEdit">
                     <div class="form-group">
                         <label for="inputName">Nazwa użytkownika:</label>
                         <div class="input-group">
@@ -89,3 +95,57 @@
         </div>
     </div>
 </div>
+
+<!-- Modal user delete account -->
+<div class="modal fade" id="userDeleteModal" tabindex="-1" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDeleteModalLabel">Użytkownik - usuń konto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/settings/user-delete" id="formUserDelete">
+                    <p>Czy na pewno chcesz usunąć swoje konto?</p>
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-danger">
+                            Usuń moje konto
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal user delete all incomes and expenses -->
+<div class="modal fade" id="userDeleteIncomesAndExpensesModal" tabindex="-1" aria-labelledby="userDeleteIncomesAndExpensesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDeleteIncomesAndExpensesLabel">Użytkownik - usuń przychody i wydatki</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/settings/user-delete-incomes-and-expenses" id="formUserSettings">
+                    <p>Czy na pewno chcesz usunąć wszystkie przychody oraz wydatki?</p>
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-danger">
+                            Usuń przychody i wydatki
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Anuluj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

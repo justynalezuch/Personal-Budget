@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     // --- User settings ---
 
-    $('#formUserSettings').validate({
+    $('#formUserEdit').validate({
         rules: {
             name: {
                 required: true,
@@ -74,7 +74,7 @@ $(document).ready(function() {
     let url = location.href;
 
     if(url.includes('user-update')) {
-        $('#userModal').modal('show');
+        $('#userEditModal').modal('show');
     }
 
     else if(url.includes('income-category-update')) {
