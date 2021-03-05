@@ -91,9 +91,6 @@ class Settings extends Authenticated
             $this->active_tab = self::USER;
             $this->renderTemplate();
         }
-
-        // Delete incomes and expenses ??
-        // Delete categories - incomes, expenses, payment_methods ??
     }
 
     /**
