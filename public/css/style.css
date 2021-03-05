@@ -179,7 +179,7 @@ blockquote p {
   border-radius: 5px;
 }
 .add-income fieldset > div, .add-expense fieldset > div {
-  height: 200px;
+  height: 170px;
   overflow-y: auto;
 }
 .add-income fieldset > div::-webkit-scrollbar-track, .add-expense fieldset > div::-webkit-scrollbar-track {
