@@ -28,7 +28,7 @@ class Settings extends Authenticated
      *
      * @var string
      */
-    private $active_tab = self::USER;
+    private $active_tab = self::INCOME_CATEGORIES;
 
     public function before()
     {
@@ -73,8 +73,15 @@ class Settings extends Authenticated
 
     public function userDeleteAction() {
 
-        if ($this->user->delete($_POST['user_id'])) {
+        $user_id = $_POST['user_id'];
 
+        if ( $this->user->delete($user_id) &&
+            Expense::delete('user_id', $user_id) &&
+            Income::delete('user_id', $user_id) &&
+            IncomeCategoryAssignedToUser::deleteBasedOnUserId($user_id) &&
+            ExpenseCategoryAssignedToUser::deleteBasedOnUserId($user_id) &&
+            PaymentMethodAssignedToUser::deleteBasedOnUserId($user_id) )
+        {
             Auth::logout();
             $this->redirect('/settings/show-deleted-account-message');
 

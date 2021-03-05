@@ -153,7 +153,7 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         return false;
     }
 
-    public function deleteBasedOnUserId($user_id) {
+    public static function deleteBasedOnUserId($user_id) {
 
         $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE user_id = :user_id;';
 
