@@ -100,7 +100,19 @@ class Settings extends Authenticated
 
     public function userDeleteIncomesAndExpensesAction() {
 
-        var_dump($_POST);
+        if (Expense::delete('user_id', $_POST['user_id']) &&
+            Income::delete('user_id', $_POST['user_id']) )
+        {
+
+            Flash::addMessage('Przychody oraz wydatki zostały poprawnie usunięte.');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Coś poszło nie tak... Spróbuj ponownie.', Flash::WARNING);
+            $this->active_tab = self::USER;
+            $this->renderTemplate();
+        }
     }
 
     public function incomeCategoryUpdateAction() {
@@ -135,7 +147,9 @@ class Settings extends Authenticated
 
     public function incomeCategoryDeleteAction() {
 
-        if(Income::delete('income_category_assigned_to_user_id', $_POST['category_id']) && $this->income_categories->delete($_POST['category_id'])) {
+        if(Income::delete('income_category_assigned_to_user_id', $_POST['category_id']) &&
+            $this->income_categories->delete($_POST['category_id']))
+        {
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
@@ -180,7 +194,9 @@ class Settings extends Authenticated
 
     public function expenseCategoryDeleteAction() {
 
-        if (Expense::delete('expense_category_assigned_to_user_id', $_POST['category_id']) && $this->expense_categories->delete($_POST['category_id'])) {
+        if (Expense::delete('expense_category_assigned_to_user_id', $_POST['category_id']) &&
+            $this->expense_categories->delete($_POST['category_id']))
+        {
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
@@ -226,7 +242,9 @@ class Settings extends Authenticated
 
     public function paymentMethodDeleteAction() {
 
-        if(Expense::delete('payment_method_assigned_to_user_id', $_POST['payment_method_id']) && $this->payment_methods->delete($_POST['payment_method_id'])) {
+        if(Expense::delete('payment_method_assigned_to_user_id', $_POST['payment_method_id']) &&
+            $this->payment_methods->delete($_POST['payment_method_id']))
+        {
 
             Flash::addMessage('Metoda płatności została usunięta.');
             $this->redirect('/settings');
