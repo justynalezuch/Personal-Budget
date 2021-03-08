@@ -151,9 +151,12 @@ class Settings extends Authenticated
 
     public function incomeCategoryDeleteAction() {
 
-        if(Income::delete('income_category_assigned_to_user_id', $_POST['category_id']) &&
-            $this->income_categories->delete($_POST['category_id']))
+
+        if( $this->income_categories->delete($_POST['category_id']) )
         {
+            $new_category_id = $this->income_categories->categoryExists('Inne') ?  $this->income_categories->categoryExists('Inne') : $this->income_categories->save(['category_name' => 'Inne']);
+
+            Income::update($_POST['category_id'], $new_category_id);
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');

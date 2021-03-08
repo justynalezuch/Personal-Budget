@@ -136,7 +136,8 @@ $(document).ready(function() {
                 if(incomes.length) {
                     $('form#formIncomeCategoryDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to usunięcie wszystkich przychodów z wybranej kategorii:</p>
+                    let text = `<p>Spowoduje to przypisanie wszystkich przychodów z wybranej kategorii do kategorii <b>"Inne"</b>:</p>
+<!--                                <span class="text-muted">Jeśli usuwasz kategorię "Inne", zostanie ona automatycznie utworzona.</span>-->
 
                             <table class="table table-light table-sm">
                               <tr>
@@ -263,7 +264,7 @@ $(document).ready(function() {
                 if(expenses.length) {
                     $('form#formExpenseCategoryDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to usunięcie wszystkich wydatków z wybranej kategorii:</p>
+                    let text = `<p>Spowoduje to przypisanie wszystkich wydatków z wybranej kategorii do kategorii <b>"Inne"</b></p>
 
                             <table class="table table-light table-sm">
                               <tr>
@@ -403,7 +404,7 @@ $(document).ready(function() {
                 if(expenses.length) {
                     $('form#formPaymentMethodDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to usunięcie wszystkich wydatków z wybraną metodą płatności:</p>
+                    let text = `<p>Spowoduje to przypisanie wszystkich wydatków z wybraną metodą płatności do kategorii <b>"Inne"</b>:</p>
 
                             <table class="table table-light table-sm">
                               <tr>

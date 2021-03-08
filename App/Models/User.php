@@ -243,10 +243,7 @@ class User extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
 }

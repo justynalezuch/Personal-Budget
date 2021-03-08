@@ -131,11 +131,7 @@ class Expense extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
     public static function delete($record_name, $id) {
@@ -146,11 +142,7 @@ class Expense extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
 }

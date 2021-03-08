@@ -49,7 +49,7 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         foreach ($user_categories as $item) {
             if(strtolower($category) == strtolower($item['name'])) {
                 if($item['id'] != $ignore_id) {
-                    return true;
+                    return $item['id'];
                 }
             }
         }
@@ -95,7 +95,8 @@ class IncomeCategoryAssignedToUser extends \Core\Model
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            $stmt->execute();
+            return $db->lastInsertId();
         }
 
         return false;
@@ -109,10 +110,7 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
     public static function deleteBasedOnUserId($user_id) {
@@ -123,10 +121,20 @@ class IncomeCategoryAssignedToUser extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
+    /**public function getCategoryId($name) {
+
+        $sql = 'SELECT id FROM incomes_category_assigned_to_users WHERE user_id = :logged_user_id AND LOWER(name) = :name;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':logged_user_id', $this->user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+     * **/
 }

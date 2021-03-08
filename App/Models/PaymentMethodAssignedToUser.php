@@ -109,10 +109,7 @@ class PaymentMethodAssignedToUser extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':payment_method_id', $payment_method_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
     public static function deleteBasedOnUserId($user_id) {
@@ -123,9 +120,6 @@ class PaymentMethodAssignedToUser extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 }

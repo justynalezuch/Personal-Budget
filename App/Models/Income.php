@@ -4,6 +4,7 @@
 namespace App\Models;
 use App\Auth;
 use PDO;
+use App\Models\IncomeCategoryAssignedToUser;
 
 
 class Income extends \Core\Model
@@ -90,6 +91,20 @@ class Income extends \Core\Model
         return false;
     }
 
+    public static function update($deleted_category_id, $new_category_id) {
+
+        $sql = 'UPDATE incomes SET income_category_assigned_to_user_id = :new_category_id WHERE income_category_assigned_to_user_id = :deleted_category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':deleted_category_id', $deleted_category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':new_category_id', $new_category_id, PDO::PARAM_INT);
+
+        return $stmt->execute() != false;
+
+    }
+
     public static function delete($record_name, $id) {
 
         $sql = "DELETE FROM incomes WHERE {$record_name}  = :id;";
@@ -98,11 +113,7 @@ class Income extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
-        if($stmt->execute()){
-
-            return true;
-        }
-        return false;
+        return $stmt->execute() != false;
     }
 
 }
