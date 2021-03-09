@@ -177,7 +177,7 @@ $(document).ready(function() {
     $.validator.addMethod('validName',
         function(value, element, param) {
             if (value != '') {
-                if (value.match(/^[a-zA-Z\s]+$/) == null) {
+                if (value.match(/^[a-zA-ZzżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/) == null) {
                     return false;
                 }
             }

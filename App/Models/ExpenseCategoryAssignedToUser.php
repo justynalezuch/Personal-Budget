@@ -24,7 +24,7 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         if($this->categoryExists($this->name, $this->id ?? null)) {
             $this->errors[] = 'Istnieje już kategoria o podanej nazwie.';
         }
-        if (preg_match('/^[a-zA-Z\s]+$/', $this->name) == 0) {
+        if (preg_match('/^[a-zA-ZzżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/', $this->name) == 0) {
             $this->errors[] = 'Nazwa kategori może składać się z liter oraz spacji.';
         }
 
