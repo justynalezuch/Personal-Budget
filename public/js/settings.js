@@ -136,10 +136,15 @@ $(document).ready(function() {
                 if(incomes.length) {
                     $('form#formIncomeCategoryDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to przypisanie wszystkich przychodów z wybranej kategorii do kategorii <b>"Inne"</b>:</p>
-<!--                                <span class="text-muted">Jeśli usuwasz kategorię "Inne", zostanie ona automatycznie utworzona.</span>-->
+                    let text = '';
 
-                            <table class="table table-light table-sm">
+                    if (category.toLocaleLowerCase() != 'inne') {
+                        text += `<p>Spowoduje to przypisanie wszystkich przychodów z wybranej kategorii do kategorii <b>"Inne"</b>:</p>`;
+                    }
+                    else {
+                        text += `<p>Jeżeli w kategorii  <b>"Inne"</b> istnieją przychody, nie można jej usunąć.</p>`;
+                    }
+                           text += `<table class="table table-light table-sm">
                               <tr>
                                 <th>Lp.</th>
                                 <th>Kwota</th>
@@ -264,9 +269,16 @@ $(document).ready(function() {
                 if(expenses.length) {
                     $('form#formExpenseCategoryDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to przypisanie wszystkich wydatków z wybranej kategorii do kategorii <b>"Inne"</b></p>
+                    let text = '';
 
-                            <table class="table table-light table-sm">
+                    if (category.toLocaleLowerCase() != 'inne') {
+                        text += `<p>Spowoduje to przypisanie wszystkich wydatków z wybranej kategorii do kategorii <b>"Inne"</b>:</p>`;
+                    }
+                    else {
+                        text += `<p>Jeżeli w kategorii  <b>"Inne"</b> istnieją wydatki, nie można jej usunąć.</p>`;
+                    }
+
+                    text += `<table class="table table-light table-sm">
                               <tr>
                                 <th>Lp.</th>
                                 <th>Kwota</th>
@@ -404,9 +416,17 @@ $(document).ready(function() {
                 if(expenses.length) {
                     $('form#formPaymentMethodDelete .alert').removeClass('d-none');
 
-                    let text = `<p>Spowoduje to przypisanie wszystkich wydatków z wybraną metodą płatności do kategorii <b>"Inne"</b>:</p>
+                    let text = '';
 
-                            <table class="table table-light table-sm">
+                    if (category.toLocaleLowerCase() != 'inne') {
+                        text +=`<p>Spowoduje to przypisanie wszystkich wydatków z wybraną metodą płatności do kategorii <b>"Inne"</b>:</p>`;
+                    }
+                    else {
+                        text +=`<p>Jeżeli istnieją wydatki z metodą płatności <b>"Inne"</b>, nie można jej usunąć.</p>`;
+                    }
+
+
+                    text += `<table class="table table-light table-sm">
                               <tr>
                                 <th>Lp.</th>
                                 <th>Kwota</th>
