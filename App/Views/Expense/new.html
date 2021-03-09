@@ -166,16 +166,35 @@
         });
     });
 
+    $('input[name="date"]').on('change', function() {
+
+        if(! checkIfCurrentMonthDate(this.value)) {
+            $(`#limitInfo`).addClass(`d-none`);
+        } else {
+            $(`#limitInfo`).removeClass(`d-none`);
+        }
+            
+    });
+
+    function checkIfCurrentMonthDate(date) {
+
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentYear = currentDate.getFullYear();
+
+        const firstDayOfActualMonth = new Date(`${currentYear}-${currentMonth}-01`);
+        const insertedDate = new Date(date);
+
+       return (firstDayOfActualMonth <= insertedDate);
+    }
+
     $('input[name="category"]').on('change', function() {
 
         let category_id = this.value;
         let category_name = $(this).next('label:first').html();
         let amount = $('input#amount').val();
 
-        $(`#limitInfo`).removeClass('alert-success');
-        $(`#limitInfo`).removeClass('alert-danger');
-
-        if (amount != '') {
+        if (amount != '' && checkIfCurrentMonthDate($('input#date').val())) {
             $.ajax({
                 url: `/account/check-expense-category-limit`,
                 type: 'POST',
@@ -218,7 +237,7 @@
        $(`#limitInfo`).removeClass('alert-success');
        $(`#limitInfo`).removeClass('alert-danger');
 
-       if(category_id && amount) {
+       if(category_id && amount && checkIfCurrentMonthDate($('input#date').val())) {
             $.ajax({
                 url: `/account/check-expense-category-limit`,
                 type: 'POST',
