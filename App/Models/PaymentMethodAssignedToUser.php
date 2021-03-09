@@ -49,7 +49,7 @@ class PaymentMethodAssignedToUser extends \Core\Model
         foreach ($user_payment_methods as $item) {
             if(strtolower($method) == strtolower($item['name'])) {
                 if($item['id'] != $ignore_id) {
-                    return true;
+                    return $item['id'];
                 }
             }
         }
@@ -95,7 +95,8 @@ class PaymentMethodAssignedToUser extends \Core\Model
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            $stmt->execute();
+            return $db->lastInsertId();
         }
 
         return false;

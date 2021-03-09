@@ -83,9 +83,9 @@ class Expense extends \Core\Model
         return false;
     }
 
-    public static function update($deleted_category_id, $new_category_id) {
+    public static function update($record_name, $deleted_category_id, $new_category_id) {
 
-        $sql = 'UPDATE expenses SET expense_category_assigned_to_user_id = :new_category_id WHERE expense_category_assigned_to_user_id = :deleted_category_id;';
+        $sql = "UPDATE expenses SET {$record_name} = :new_category_id WHERE {$record_name} = :deleted_category_id;";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);

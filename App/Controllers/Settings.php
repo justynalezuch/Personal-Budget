@@ -204,11 +204,10 @@ class Settings extends Authenticated
 
         if ($this->expense_categories->delete($_POST['category_id']))
         {
-
             if(Expense::findByCategory($_POST['category_id'])) {
 
                 $new_category_id = $this->expense_categories->categoryExists('Inne') ? $this->expense_categories->categoryExists('Inne') : $this->expense_categories->save(['category_name' => 'Inne']);
-                Expense::update($_POST['category_id'], $new_category_id);
+                Expense::update('expense_category_assigned_to_user_id', $_POST['category_id'], $new_category_id);
             }
 
             Flash::addMessage('Kategoria została usunięta.');
@@ -255,9 +254,14 @@ class Settings extends Authenticated
 
     public function paymentMethodDeleteAction() {
 
-        if(Expense::delete('payment_method_assigned_to_user_id', $_POST['payment_method_id']) &&
-            $this->payment_methods->delete($_POST['payment_method_id']))
+        if($this->payment_methods->delete($_POST['payment_method_id']))
         {
+            if(Expense::findByPaymentMethod($_POST['payment_method_id'])) {
+
+                $new_payment_method_id = $this->payment_methods->methodExists('Inne') ? $this->payment_methods->methodExists('Inne') : $this->payment_methods->save(['payment_method_name' => 'Inne']);
+
+                Expense::update('payment_method_assigned_to_user_id', $_POST['payment_method_id'], $new_payment_method_id);
+            }
 
             Flash::addMessage('Metoda płatności została usunięta.');
             $this->redirect('/settings');
