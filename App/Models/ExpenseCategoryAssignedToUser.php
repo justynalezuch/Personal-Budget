@@ -55,7 +55,7 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
         foreach ($user_categories as $item) {
             if(strtolower($category) == strtolower($item['name'])) {
                 if($item['id'] != $ignore_id) {
-                    return true;
+                    return $item['id'];
                 }
             }
         }
@@ -121,7 +121,8 @@ class ExpenseCategoryAssignedToUser extends \Core\Model
                 $stmt->bindValue(':monthly_limit', $this->monthly_limit, PDO::PARAM_STR);
             }
 
-            return $stmt->execute();
+            $stmt->execute();
+            return $db->lastInsertId();
         }
 
         return false;

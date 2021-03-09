@@ -120,6 +120,7 @@ $(document).ready(function() {
     $('button[data-target="#incomeCategoryDeleteModal"]').click(function () {
 
         $('form#formIncomeCategoryDelete .alert').addClass('d-none');
+        $('form#formIncomeCategoryDelete button[type="submit"]').prop("disabled", false);
 
         const element = $(this).parent().siblings();
         const id = element.attr('data-id');
@@ -143,6 +144,7 @@ $(document).ready(function() {
                     }
                     else {
                         text += `<p>Jeżeli w kategorii  <b>"Inne"</b> istnieją przychody, nie można jej usunąć.</p>`;
+                        $('form#formIncomeCategoryDelete button[type="submit"]').prop("disabled", true);
                     }
                            text += `<table class="table table-light table-sm">
                               <tr>
@@ -252,6 +254,7 @@ $(document).ready(function() {
     $('button[data-target="#expenseCategoryDeleteModal"]').click(function () {
 
         $('form#formExpenseCategoryDelete .alert').addClass('d-none');
+        $('form#formExpenseCategoryDelete button[type="submit"]').prop("disabled", false);
 
         const element = $(this).parent().siblings('p');
 
@@ -276,6 +279,7 @@ $(document).ready(function() {
                     }
                     else {
                         text += `<p>Jeżeli w kategorii  <b>"Inne"</b> istnieją wydatki, nie można jej usunąć.</p>`;
+                        $('form#formExpenseCategoryDelete button[type="submit"]').prop("disabled", true);
                     }
 
                     text += `<table class="table table-light table-sm">
@@ -396,6 +400,7 @@ $(document).ready(function() {
     $('button[data-target="#paymentMethodDeleteModal"]').click(function () {
 
         $('form#formPaymentMethodDelete .alert').addClass('d-none');
+        $('form#formPaymentMethodDelete button[type="submit"]').prop("disabled", false);
 
         const element = $(this).parent().siblings();
         const id = element.attr('data-id');
@@ -414,15 +419,16 @@ $(document).ready(function() {
             success : function(response) {
                 let expenses = JSON.parse(response);
                 if(expenses.length) {
-                    $('form#formPaymentMethodDelete .alert').removeClass('d-none');
 
+                    $('form#formPaymentMethodDelete .alert').removeClass('d-none');
                     let text = '';
 
-                    if (category.toLocaleLowerCase() != 'inne') {
+                    if (payment_method.toLocaleLowerCase() != 'inne') {
                         text +=`<p>Spowoduje to przypisanie wszystkich wydatków z wybraną metodą płatności do kategorii <b>"Inne"</b>:</p>`;
                     }
                     else {
                         text +=`<p>Jeżeli istnieją wydatki z metodą płatności <b>"Inne"</b>, nie można jej usunąć.</p>`;
+                        $('form#formPaymentMethodDelete button[type="submit"]').prop("disabled", true);
                     }
 
 

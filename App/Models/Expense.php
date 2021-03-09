@@ -71,6 +71,7 @@ class Expense extends \Core\Model
         }
         return false;
     }
+
     public static function expenseExists($category_id) {
 
         $expense = static::findByCategory($category_id);
@@ -80,6 +81,20 @@ class Expense extends \Core\Model
         }
 
         return false;
+    }
+
+    public static function update($deleted_category_id, $new_category_id) {
+
+        $sql = 'UPDATE expenses SET expense_category_assigned_to_user_id = :new_category_id WHERE expense_category_assigned_to_user_id = :deleted_category_id;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':deleted_category_id', $deleted_category_id, PDO::PARAM_INT);
+        $stmt->bindValue(':new_category_id', $new_category_id, PDO::PARAM_INT);
+
+        return $stmt->execute() != false;
+
     }
 
     public static function findByCategory($category_id) {

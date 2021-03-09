@@ -28,7 +28,7 @@ class Settings extends Authenticated
      *
      * @var string
      */
-    private $active_tab = self::INCOME_CATEGORIES;
+    private $active_tab = self::EXPENSE_CATEGORIES;
 
     public function before()
     {
@@ -151,12 +151,13 @@ class Settings extends Authenticated
 
     public function incomeCategoryDeleteAction() {
 
-
-        if( $this->income_categories->delete($_POST['category_id']) )
+        if($this->income_categories->delete($_POST['category_id']) )
         {
-            $new_category_id = $this->income_categories->categoryExists('Inne') ?  $this->income_categories->categoryExists('Inne') : $this->income_categories->save(['category_name' => 'Inne']);
+            if(Income::findByCategory($_POST['category_id'])) {
 
-            Income::update($_POST['category_id'], $new_category_id);
+                $new_category_id = $this->income_categories->categoryExists('Inne') ? $this->income_categories->categoryExists('Inne') : $this->income_categories->save(['category_name' => 'Inne']);
+                Income::update($_POST['category_id'], $new_category_id);
+            }
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
@@ -201,9 +202,14 @@ class Settings extends Authenticated
 
     public function expenseCategoryDeleteAction() {
 
-        if (Expense::delete('expense_category_assigned_to_user_id', $_POST['category_id']) &&
-            $this->expense_categories->delete($_POST['category_id']))
+        if ($this->expense_categories->delete($_POST['category_id']))
         {
+
+            if(Expense::findByCategory($_POST['category_id'])) {
+
+                $new_category_id = $this->expense_categories->categoryExists('Inne') ? $this->expense_categories->categoryExists('Inne') : $this->expense_categories->save(['category_name' => 'Inne']);
+                Expense::update($_POST['category_id'], $new_category_id);
+            }
 
             Flash::addMessage('Kategoria została usunięta.');
             $this->redirect('/settings');
